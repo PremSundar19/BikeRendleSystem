@@ -94,8 +94,6 @@
                     </div>
                     <br>
                     <div class="form-group">
-                    <!-- <input type="submit" value="Register" class="btn btn-primary btn-xs py-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-                          
                         <button type="submit" class="btn btn-primary py-1">Register</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <span style="left: 50px;">already a member ? <a href="#">Log in </a></span>
                     </div>

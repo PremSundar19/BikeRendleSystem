@@ -25,3 +25,4 @@ Route::post('verifyCustomer', [CustomerController::class, 'verifyCustomer']);
 Route::get('index', function () {
     return view('bike.index');
 });
+Route::get('contactUs', [CustomerController::class,'contactUs']);

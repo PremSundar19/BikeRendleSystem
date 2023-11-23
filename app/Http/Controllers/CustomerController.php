@@ -66,4 +66,7 @@ class CustomerController extends Controller
             return redirect('bike.login')->with('message','username is wrong');
         }
     }
+    public function contactUs(){
+        return view('bike.contactus');
+    }
 }
