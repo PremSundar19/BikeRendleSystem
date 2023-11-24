@@ -16,57 +16,62 @@ class CustomerController extends Controller
     public function storeCustomer(Request $request)
     {
         // dd($request);
-        $validateData = $request->validate([
-            'firstname' => 'required|string|max:255|regex:/^[a-zA-Z.\s]+$/',
-            'middlename' => 'required|nullable',
-            'lastname' => 'required|nullable',
+        $vali = $request->validate([
+            'firstname' => 'required|string|regex:/^[a-zA-Z.\s]+$/',
             'dob' => 'required',
             'age' => 'required',
             'gender' => 'required|not_in:- choose -',
             'email' => 'required|unique:customer,email',
             'contactno' => 'required',
-            'username' => 'required|unique:customer,username',
             'password' => 'required',
         ]);
-        dd($validateData);
         $customer = new Customer();
-        $customer->firstname = $validateData['firstname'];
-        $customer->middlename = $validateData['middlename'];
-        $customer->lastname = $validateData['lastname'];
-        $customer->dob = $validateData['dob'];
-        $customer->age = $validateData['age'];
-        $customer->gender = $validateData['gender'];
-        $customer->email = $validateData['email'];
-        $customer->contactno = $validateData['contactno'];
-        $customer->username = $validateData['username'];
-        $customer->password = Hash::make( $validateData['password']);
+        $customer->firstname = $request['firstname'];
+        $customer->lastname = $request['lastname'];
+        $customer->dob = $request['dob'];
+        $customer->age = $request['age'];
+        $customer->gender = $request['gender'];
+        $customer->email = $request['email'];
+        $customer->mobile = $request['contactno'];
+        $customer->password = Hash::make($request['password']);
         $customer->save();
         return redirect('register')->with('message', 'Registered Successfully');
     }
-    public function showLogin(){
+    public function showLogin()
+    {
         return view('bike.login');
     }
     public function verifyCustomer(Request $request)
     {
-        $validate = $request->validate([ 
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-        $username = $validate['username'];
-        $password = $validate['password'];
-        $customer =  DB::select('SELECT * FROM customer WHERE username=?',[$username]);
-        if($customer){
-            $hashedPassword = $customer->password;
-            if(Hash::check($password, $hashedPassword)){
-              return redirect('bike.index');
-            }else{
-                return redirect('bike.login')->with('message','password is wrong');
-            }
-        }else{
-            return redirect('bike.login')->with('message','username is wrong');
+        $email = $request['email'];
+        $password = $request['password'];
+        $type = $request['type'];
+
+        if ($type === null) {
+            return redirect('index')->with('message', 'Please select type');
         }
+        if ($type === "admin" && $email === "admin123@gmail.com" && $password === "Admin@123") {
+            return redirect('admindashboard');
+        } else if ($type === "user") {
+            $customer = Customer::where('email', $email)->first();
+            if ($customer && Hash::check($password, $customer->password)) {
+                return redirect('dashboard');
+            }
+        }
+        // return session('admin_id') ? view('hospital.admindashboard') : redirect('index');
+    
+        return redirect('index')->with('message', 'Email or Password is invalid');
     }
-    public function contactUs(){
+    public function contactUs()
+    {
         return view('bike.contactus');
+    }
+    public function dashboard()
+    {
+        return view('bike.dashboard');
+    }
+    public function admindashboard()
+    {
+        return view('bike.admindashboard');
     }
 }

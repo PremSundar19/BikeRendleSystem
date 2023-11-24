@@ -8,10 +8,6 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-        .index {
-            background-image: url('ktm/bike.jpg');
-        }
-
         body {
             background-size: cover;
             background-position: absolute;
@@ -32,15 +28,7 @@
             margin-right: 10px;
         }
 
-        .indexLogin {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            width: 300px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(55, 75, 85, 0.5);
-        }
-
-        .contactForm {
+        .form {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 15px;
             border-radius: 10px;
@@ -62,7 +50,7 @@
     </style>
 </head>
 
-<body class="index">
+<body>
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" href="#">
@@ -73,64 +61,54 @@
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="container  justify-content-center">
+                <div class="alert alert-success text-center customerName" role="alert">
+                    hii vijay !
+                </div>
+            </div>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">About Us</a>
+                    <a class="nav-link" data-target="#bikeBookModal" data-toggle="modal">Book_Bike</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" data-target="#contactUs" data-toggle="modal">Contact</a>
                 </li>
             </ul>
         </div>
     </nav>
-    <div class="">
-        <h1 style="color:white">Welcome to JK Bike Rendle System</h1>
-    </div>
-    <div class="container mt-5">
-        <div class="row justify-content-end center-container">
-            <div class="col-md-4">
-                @if(Session::has('message'))
-                <div class="alert alert-danger text-center ml-auto" id="msg" role="alert" style="width: 300px;">
-                    {{ Session::get('message') }}
+    <div class="container mt-2">
+        <div id="message-container"></div>
+        <div class="card">
+            <div class="card-body">
+                <div class="bg-success">
+                    <span id="newEmployeeAddedMessage"></span>
                 </div>
-                <script>
-                    setTimeout(function () {
-                        var alert = document.querySelector('.alert');
-                        alert.style.display = 'none';
-                    }, 5000);
-                </script>
-                @endif
-                <form action="{{url('verifyCustomer')}}" method="post" class="indexLogin ml-auto">
-                    <h4 class="text-center text-success">Login Form</h4>
-                    <hr>
-                    @csrf
-                    <div class="form-group">
-                        <input type="email" class="form-control" name="email" id="email" placeholder="- Email Address -"
-                          value="{{old('email') ? : ''}}"  required>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" name="password" id="password"
-                            placeholder="- password -" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="loginType">Login Type</label> &nbsp; <b>:</b> &nbsp; &nbsp;
-                        <input type="radio" name="type" id="User" value="user"><label for="User">&nbsp;&nbsp;User</label> &nbsp;
-                        &nbsp;
-                        <input type="radio" name="type" id="Admin" value="admin"><label for="Admin">&nbsp;&nbsp;Admin</label>
-                    </div>
-                    <hr>
-                    <div class="form-group">
-                        <input type="submit" value="Login"
-                            class="btn btn-primary btn-xs py-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span style="left: 50px;">Not a member ? <a href="{{url('register')}}">Sign up </a></span>
-                    </div>
-                </form>
+                <div class="bg-info  p-2  m-2">
+                    <h5 class="text-dark text-center">Booked Bike Details</h5>
+                </div>
+                <table class="table  table-bordered table-stripted table-hover mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Date Of Birth</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">salary</th>
+                            <th scope="col">City</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Booked_bike_data">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
+    <!--contactus Modal -->
     <div class="modal fade" id="contactUs" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="contactUsLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -143,7 +121,7 @@
                 <div class="modal-body">
                     <p>If you have any questions or concerns, please feel free to contact us using the form below.</p>
 
-                    <form action="" method="post" class="contactForm">
+                    <form action="" method="post" class="form">
                         @csrf
                         <div class="form-group">
                             <label for="name">Name:</label>
@@ -167,6 +145,7 @@
             </div>
         </div>
     </div>
+   
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

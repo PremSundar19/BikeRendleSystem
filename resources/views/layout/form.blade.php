@@ -15,10 +15,12 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(55, 75, 85, 0.5);
         }
-        .red{
-            background-color:red;
-            color:white;
+
+        .red {
+            background-color: red;
+            color: white;
         }
+
         .registration {
             background-image: url('image/registration.jpg');
         }
@@ -31,7 +33,6 @@
             height: 100vh;
             margin: 0;
             padding: 0;
-            /* color: #fff; */
         }
 
         .center-container {
@@ -46,7 +47,36 @@
             text-align: center;
         }
 
+
+        .navbar {
+            background-color: #333;
+        }
+
+        .navbar-brand img {
+            height: 30px;
+            width: auto;
+            margin-right: 10px;
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function calculateAge(dobInput, ageInput, dobError) {
+            var dob = new Date($(dobInput).val());
+            var today = new Date();
+            var age = today.getFullYear() - dob.getFullYear();
+            if ((dob.getFullYear() > today.getFullYear()) || (dob.getFullYear() === today.getFullYear() && dob.getMonth() > today.getMonth()) || (dob.getFullYear() === today.getFullYear() && dob.getMonth() === today.getMonth() && dob.getDate() > today.getDate())) {
+                $(dobError).text('* please select proper date');
+                $(ageInput).val('');
+            } else {
+                if ((today.getMonth() < dob.getMonth()) || (dob.getMonth() === today.getMonth() && today.getDate() < dob.getDate())) {
+                    age--;
+                }
+                $(dobError).text('');
+                $(ageInput).val(age);
+            }
+        }
+    </script>
 </head>
 @yield('content')
 
