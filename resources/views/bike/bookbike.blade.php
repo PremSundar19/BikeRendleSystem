@@ -30,12 +30,19 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="- Your Name -">
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
+                                name="name" placeholder="- Your Name -">
+                            @error('name')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="" class="form-label">Email</label>
-                            <input type="email" id="email" class="form-control" name="email"
-                                placeholder="- Email Address -">
+                            <input type="email" id="email" class="form-control  @error('email') is-invalid @enderror"
+                                name="email" placeholder="- Email Address -">
+                            @error('email')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="row">
@@ -57,11 +64,12 @@
                             <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
+
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="brand" class="form-label">Select Brand</label>
-                            <select name="brand" id="brand" class="form-control">
+                            <select name="brand" id="brand" class="form-control  @error('brand') is-invalid @enderror">
                                 <option>- choose -</option>
                                 <option value="Yamaha">Yamaha</option>
                                 <option value="Honda">Honda</option>
@@ -71,45 +79,72 @@
                                 <option value="Tvs">Tvs</option>
                                 <option value="Hero">Hero</option>
                             </select>
+                            @error('brand')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="bike" class="form-label">Select Model</label>
-                            <select name="bike" id="bike" class="form-control listOfBike">
+                            <label for="bike" class="form-label">Select Bike</label>
+                            <select name="bike" id="bike"
+                                class="form-control listOfBike  @error('bike') is-invalid @enderror">
                             </select>
+                            @error('bike')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="" class="form-label">Select Duration</label>
-                            <select name="duration" id="duration" class="form-control">
+                            <select name="duration" id="duration"
+                                class="form-control  @error('duration') is-invalid @enderror">
                                 <option>- choose -</option>
                                 <option value="Hour">Hour</option>
                                 <option value="Day">Day</option>
                                 <option value="Week">Week</option>
                                 <option value="Month">Month</option>
                             </select>
+                            <span class="text-danger selectDuration"></span>
+                            @error('duration')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="wantedPeriod" class="form-label"> Wanted Period </label>
-                            <input type="number" name="wantedPeriod" id="wantedPeriod" class="form-control">
+                            <input type="number" name="wantedPeriod" id="wantedPeriod"
+                                class="form-control  @error('wantedPeriod') is-invalid @enderror">
+                            @error('wantedPeriod')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="rate" class="form-label">Per Hour Rent</label>
-                            <input type="text" name="rate" id="rate" class="form-control"
+                            <input type="text" name="rate" id="rate"
+                                class="form-control  @error('rate') is-invalid @enderror"
                                 placeholder="- Rate for per-hr -" readonly>
+                            @error('rate')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="amount" class="form-label">Total Amount</label>
-                            <input type="text" name="amount" id="amount" class="form-control" placeholder="- Amount -"
+                            <input type="number" name="amount" id="amount"
+                                class="form-control  @error('amount') is-invalid @enderror" placeholder="- Amount -"
                                 readonly>
+                            @error('amount')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="mobile form-label">mobile</label>
-                        <input type="mobile" id="mobile" class="form-control" name="mobile"
-                            placeholder="- Mobile Number -">
+                        <input type="number" id="mobile" class="form-control  @error('mobile') is-invalid @enderror"
+                            name="mobile" placeholder="- Mobile Number -">
+                        @error('mobile')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Book" class="btn btn-primary">
@@ -119,11 +154,12 @@
             </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <script>
         $(document).ready(() => {
-            calculateAge('#dob', '#age', '.dobError');
-            checkEligible();
+            $('#dob').on('change', () => {
+                calculateAge('#dob', '#age', '.dobError');
+            })
             $('#brand').on('change', () => {
                 var brand = $('#brand option:selected').val().toLowerCase();
                 $.ajax({
@@ -139,16 +175,28 @@
                     }
                 });
             })
-            function checkEligible() {
-                var age = $('#age').val();
-                if (age < 18) {
-                    $('#message-container').html('<div class="alert alert-danger text-center">Your not eligible to book bike</div>');
-                    setTimeout(() => {
-                        $('#message-container').empty();
-                    }, 4000);
-                }
-            }
-
+            $('#bike').on('click', () => {
+                $.ajax({
+                    url: 'fetchBookings',
+                    type: 'GET',
+                    success: function (respone) {
+                        $('#bike option').each(function () {
+                            var bikeName = $(this).val();
+                            if (bikeName === "- choose -") {
+                                $(this).addClass('black');
+                            }
+                            var matchBike = respone.find(bike => bike.bikename === bikeName);
+                            if (matchBike) {
+                                $(this).addClass('red');
+                            } else {
+                                if (bikeName !== "- choose -") {
+                                    $(this).addClass('green');
+                                }
+                            }
+                        })
+                    }
+                });
+            })
             $('#bike').on('change', () => {
                 var bike = $('#bike option:selected').val();
                 $.ajax({
@@ -164,25 +212,46 @@
             })
 
             $('#wantedPeriod').on('change', () => {
-                var perHourCost = $('#rate').val();
+                var perHourCost = parseFloat($('#rate').val());
                 var wantedPeriod = parseFloat($('#wantedPeriod').val());
                 var duration = $('#duration option:selected').val();
+                if (duration === '- choose -') {
+                    $('.selectDuration').text('* please select duration');
+                    $('#wantedPeriod').val('');
+                } else {
+                    $('.selectDuration').text('');
+                }
                 var total = 1;
                 if (duration === "Hour") {
                     total *= perHourCost * wantedPeriod;
                 } else if (duration === "Day") {
-                    
+                    total *= perHourCost * wantedPeriod * 24;
                 } else if (duration === "Week") {
-
+                    total *= perHourCost * wantedPeriod * 24 * 7;
                 } else if (duration === "Month") {
-
+                    total *= perHourCost * wantedPeriod * 24 * 30;
                 }
-                $('#amount').val(total);
+                if (!isNaN(total) && duration !== '- choose -') {
+                    $('#amount').val(total);
+                }
                 console.log('perhourcost : ' + perHourCost + ', wantriotedPeriod : ' + wantedPeriod + ', duration : ' + duration);
             })
 
+            $('.form').on('submit', function (event) {
+                event.preventDefault();
+                var age = parseInt($('#age').val());
+                if (age < 18) {
+                    $('#message-container').html('<div class="alert alert-danger text-center">You are not eligible to book a bike.</div>');
+                    setTimeout(() => {
+                        $('#message-container').empty();
+                    }, 4000);
+                } else {
+                    this.submit();
+                }
+            });
         })
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 </body>
 @endsection

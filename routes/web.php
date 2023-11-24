@@ -30,8 +30,11 @@ Route::get('index', function () {
 Route::get('contactUs', [CustomerController::class,'contactUs']);
 Route::get('dashboard',[CustomerController::class,'dashboard']);
 Route::get('admindashboard',[CustomerController::class,'admindashboard']);
+
 Route::get('showBikeBookForm',[BikeController::class,'showBikeBookForm']);
 Route::post('storeBike',[BikeController::class,'storeBike']);
 Route::get('fetchBikes/{brand}',[BikeController::class,'fetchBikes']);
 Route::get('fetchBikePerCharge/{bike}',[BikeController::class,'fetchBikePerCharge']);
-Route::post('storeBooking',[BookingController::class ,'storeBooking']);
+
+Route::post('storeBooking',[BookingController::class ,'store']);
+Route::get('fetchBookings',[BookingController::class,'fetchBookings']);

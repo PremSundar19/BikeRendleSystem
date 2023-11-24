@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use DB;
+use Session;
 use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
@@ -55,6 +56,7 @@ class CustomerController extends Controller
         } else if ($type === "user") {
             $customer = Customer::where('email', $email)->first();
             if ($customer && Hash::check($password, $customer->password)) {
+                Session::put('username',$customer->username);
                 return redirect('dashboard');
             }
         }

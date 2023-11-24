@@ -8,32 +8,52 @@ use Session;
 
 class BookingController extends Controller
 {
-    public function storeBooking(Request $request){
-        $request->validate([
-            'bike_id' => 'required',
-            'customer_name' => 'required|string',
-            'customer_email' => 'required|email',
-            'dob' => 'required|date',
-            'age' => 'required|integer',
-            'brand_name' => 'required|string',
-            'bike_name' => 'required|string',
-            'duration' => 'required|string',
-            'wanted_period' => 'required|integer',
-            'per_hour_rent' => 'required|numeric',
-            'total_amount' => 'required|numeric',
-            'mobile' => 'required|string',
-        ]);
-        // dd($request);
-        
-        $bikeId = $request['bike_id'];
-        $isAvailable= Booking::where('bike_id', $bikeId)->first();
-        if($isAvailable){
-            Session::put('message','Sorry This Bike not available');
-           return redirect('showBikeBookForm');
-        }
-        $booking = Booking::create($request->all()); 
-        Session::put('message','Sorry This Bike not available');
-        Session::put('class',true);   
+
+public function store(Request $request){
+    $request->validate([
+        'bike_id' => 'required',
+        'name' => 'required',
+        'email' => 'required|unique:booking,email',
+        'dob' => 'required',
+        'age' => 'required',
+        'brand' => 'required',
+        'bike' => 'required',
+        'duration' => 'required',
+        'wantedPeriod' => 'required',
+        'rate' => 'required',
+        'amount' => 'required',
+        'mobile' => 'required',
+    ]);
+
+
+    $bikeId = $request['bike_id'];
+    $isAvailable = Booking::where('bike_id', $bikeId)->first();
+    if ($isAvailable) {
+        Session::put('message', 'Sorry This Bike not available');
         return redirect('showBikeBookForm');
+    }
+
+    $booking = new Booking();
+    $booking->bike_id = $request['bike_id'];
+    $booking->customer_name = $request['name'];
+    $booking->customer_email = $request['email'];
+    $booking->dob = $request['dob'];
+    $booking->age = $request['age'];
+    $booking->brand_name = $request['brand_name'];
+    $booking->bike_name = $request['bike_name'];
+    $booking->wanted_period = $request['wanted_period'];
+    $booking->per_hour_rent = $request['per_hour_rent'];
+    $booking->total_amount = $request['total_amount'];
+    $booking->mobile = $request['mobile'];
+    $rowAffected = $booking->save();
+    if ($rowAffected) {
+        Session::put('message', 'Booked Successfully');
+        Session::put('class', true);
+        return redirect('showBikeBookForm');
+    }
+}
+    public function fetchBookings()
+    {
+        return Booking::all();
     }
 }

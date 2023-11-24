@@ -57,11 +57,25 @@
             width: auto;
             margin-right: 10px;
         }
+        .black{
+            color : black;
+        }
+
+        .red{
+            color:white;
+            background-color : red;
+        }
+        
+        .green{
+            color:white;
+            background-color : green;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         function calculateAge(dobInput, ageInput, dobError) {
+    
             var dob = new Date($(dobInput).val());
             var today = new Date();
             var age = today.getFullYear() - dob.getFullYear();
