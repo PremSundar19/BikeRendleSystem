@@ -5,9 +5,9 @@
     <div class="container mt-5">
         <div class="row justify-content-center center-container">
             <div class="col-md-5">
-                @if(Session::has('message'))
+                @if(Session::has('registermessage'))
                 <div class="alert alert-success justify-content-center text-center" id="msg" role="alert">
-                    {{ Session::get('message') }}
+                    {{ Session::get('registermessage') }}
                 </div>
                 <script>
                     setTimeout(function () {

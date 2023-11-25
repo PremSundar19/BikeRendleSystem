@@ -3,30 +3,32 @@
 
 <body>
     <div class="container mt-5">
-
         <div class="row justify-content-center center-container">
             <div class="col-md-5">
                 <div id="message-container"></div>
-                @if(Session::has('message'))
-                <div class="alert alert-success justify-content-center text-center" id="msg" role="alert">
-                    {{ Session::get('message') }}
+                @if(Session::has('bookingmessage'))
+                <div class="alert alert-{{Session::get('class')}} justify-content-center text-center" role="alert">
+                    {{ Session::get('bookingmessage') }}
                 </div>
                 <script>
                     setTimeout(function () {
                         var alert = document.querySelector('.alert');
                         alert.style.display = 'none';
-                        var isTrue = "{{Session::get('class')}}";
-                        if (isTrue) {
-                            window.location.href = '/dashboard';
+
+                        var status = "{{session('status')}}";
+                        if (status) {
+                             <? php session:: flush();?>
+                                window.location.href = '/dashboard';
                         }
                     }, 3500);
                 </script>
                 @endif
-                <form action="{{url('storeBooking')}}" method="post" class="form">
+                <form action="{{url('saveBooking')}}" method="post" class="form">
                     <h2 class="text-center text-success" style="display:inline;"><b>Book Bike</b></h2>
                     <!-- <hr> -->
                     @csrf
                     <input type="hidden" name="bikeId" id="bikeId">
+                    <input type="hidden" name="userId" id="userId" value="{{session('userId')}}">
                     <div class="row">
                         <div class="col-md-6">
                             <label for="name" class="form-label">Name</label>
@@ -160,6 +162,7 @@
             $('#dob').on('change', () => {
                 calculateAge('#dob', '#age', '.dobError');
             })
+
             $('#brand').on('change', () => {
                 var brand = $('#brand option:selected').val().toLowerCase();
                 $.ajax({
@@ -175,6 +178,7 @@
                     }
                 });
             })
+
             $('#bike').on('click', () => {
                 $.ajax({
                     url: 'fetchBookings',
@@ -182,21 +186,19 @@
                     success: function (respone) {
                         $('#bike option').each(function () {
                             var bikeName = $(this).val();
+                            var matchBike = respone.find(bike => bikeName === bike.bike_name);
                             if (bikeName === "- choose -") {
                                 $(this).addClass('black');
-                            }
-                            var matchBike = respone.find(bike => bike.bikename === bikeName);
-                            if (matchBike) {
+                            } else if (matchBike) {
                                 $(this).addClass('red');
                             } else {
-                                if (bikeName !== "- choose -") {
-                                    $(this).addClass('green');
-                                }
+                                $(this).addClass('green');
                             }
                         })
                     }
                 });
             })
+
             $('#bike').on('change', () => {
                 var bike = $('#bike option:selected').val();
                 $.ajax({
@@ -209,6 +211,26 @@
                         })
                     }
                 });
+            })
+
+            $('#bike').on('click', () => {
+                var bike = $('#bike option:selected').val();
+                $.ajax({
+                    url: '/checkAvailable/' + bike,
+                    type: 'GET',
+                    success: function (respone) {
+                        console.log(respone);
+                        if (respone.isExists) {
+                            $('#message-container').html('<div class="alert alert-danger text-center">Sorry ' + bike + ' is not available</div>');
+                            setTimeout(() => {
+                                $('#message-container').empty();
+                            }, 4000);
+                            $('#bike').val('- choose -');
+                            $('#rate').val('');
+
+                        }
+                    }
+                })
             })
 
             $('#wantedPeriod').on('change', () => {

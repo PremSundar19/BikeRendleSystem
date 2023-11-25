@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>JkBikes</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -63,17 +64,32 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="container  justify-content-center">
+            <div class="container  justify-content-center msgz">
                 <div class="alert alert-success text-center userName" role="alert">
-
                 </div>
             </div>
+            @if(Session::has('message'))
+            <div class="alert alert-danger text-center col-md-6" id="msg" role="alert" style="width: 300px;">
+                {{ Session::get('message') }}
+            </div>
+            <script>
+                setTimeout(function () {
+                    var alert = document.querySelector('.alert');
+                    alert.style.display = 'none';
+                    window.location.href = '/index';
+                }, 5000);
+            </script>
+            @endif
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url('showBikeBookForm')}}">Book_Bike</a>
+
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" data-target="#contactUs" data-toggle="modal">Contact</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url('logout')}}" id="logout">LogOut</a>
                 </li>
             </ul>
         </div>
@@ -86,22 +102,24 @@
                     <span id="newEmployeeAddedMessage"></span>
                 </div>
                 <div class="bg-info  p-2  m-2">
-                    <h5 class="text-dark text-center">Booked Bike Details</h5>
+                    <h5 class="text-center">Booked Bike Details</h5>
                 </div>
+                <input type="hidden" name="bookingId" id="bookingId">
                 <table class="table  table-bordered table-stripted table-hover mt-3">
                     <thead class="table-dark">
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Gender</th>
-                            <th scope="col">Date Of Birth</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">salary</th>
-                            <th scope="col">City</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Model</th>
+                            <th scope="col">Duration</th>
+                            <th scope="col">Per/hr price</th>
+                            <th scope="col">Total Amount</th>
+                            <th scope="col">Fine Amount</th>
+                            <th scope="col">status</th>
                         </tr>
                     </thead>
-                    <tbody id="Booked_bike_data">
+                    <tbody id="BookedBikeData">
                     </tbody>
                 </table>
             </div>
@@ -120,7 +138,6 @@
                 </div>
                 <div class="modal-body">
                     <p>If you have any questions or concerns, please feel free to contact us using the form below.</p>
-
                     <form action="" method="post" class="form">
                         @csrf
                         <div class="form-group">
@@ -129,7 +146,8 @@
                         </div>
                         <div class="form-group">
                             <label for="email">Email:</label>
-                            <input type="email" id="email" class="form-control" name="email" required>
+                            <input type="contactemail" id="contactemail" class="form-control" name="contactemail"
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="message">message</label>
@@ -145,20 +163,66 @@
             </div>
         </div>
     </div>
-    <?php
-
-  use Illuminate\Support\Facades\Session;
-  $userName = Session::get('username');
-  ?>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
-        var userName = "<?php echo $userName; ?>";
-        $('.userName').text('Hi ' + userName);
-    </script>
+        $(document).ready(() => {
+            var userId = "{{session('userId')}}"
+            var firstName = "{{session('firstName')}}";
+            var lastName = "{{session('lastName')}}";
+            $('.userName').text('Welcome ' + firstName + ' ' + lastName);
 
+            $.ajax({
+                url: '/fetchBookingById/' + userId,
+                type: 'GET',
+                success: function (respone) {
+                    $('#BookedBikeData').empty();
+                    var tr = '';
+                    $.each(respone, function (index, booking) {
+                        var id = booking.booking_id;
+                        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                            url: "{{url('calculateFine')}}",
+                            type: 'POST',
+                            data: { booking_id: id },
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            success: function (response) {
+                                console.log(hii);
+                                console.log(respone);
+                            }
+                        })
+                        tr += '<tr>';
+                        tr += '<td>' + firstName + ' ' + lastName + '</td>';
+                        tr += '<td>' + booking.customer_email + '</td>';
+                        tr += '<td>' + booking.brand_name + '</td>';
+                        tr += '<td>' + booking.bike_name + '</td>';
+                        tr += '<td>' + booking.wanted_period + ' ' + booking.duration + '</td>';
+                        tr += '<td>' + booking.per_hour_rent + ' Rs' + '</td>';
+                        tr += '<td>' + booking.total_amount + ' Rs' + '</td>';
+                        tr += '<td>' + booking.fine_amount + '</td>';
+                        tr += '<td>' + booking.status + '</td>';
+                        tr += '</tr>';
+                    })
+                    $('#BookedBikeData').append(tr);
+                }
+            })
+
+
+            $('#logout').on('click', () => {
+                var alert = document.querySelector('.msgz');
+                alert.style.display = 'none';
+                $('.userName').text('');
+            })
+        })
+
+    </script>
+    <script>
+
+    </script>
 </body>
 
 </html>

@@ -90,9 +90,9 @@
     <div class="container mt-5">
         <div class="row justify-content-end center-container">
             <div class="col-md-4">
-                @if(Session::has('message'))
+                @if(Session::has('indexmessage'))
                 <div class="alert alert-danger text-center ml-auto" id="msg" role="alert" style="width: 300px;">
-                    {{ Session::get('message') }}
+                    {{ Session::get('indexmessage') }}
                 </div>
                 <script>
                     setTimeout(function () {
@@ -150,8 +150,8 @@
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" class="form-control" name="email" required>
+                            <label for="contactemail">Email:</label>
+                            <input type="email" id="contactemail" class="form-control" name="contactemail" required>
                         </div>
                         <div class="form-group">
                             <label for="message">message</label>

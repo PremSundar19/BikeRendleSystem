@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
-
+use DB;
 class BikeController extends Controller
 {
     public function storeBike(Request $request){
@@ -25,4 +25,5 @@ class BikeController extends Controller
     public function fetchBikePerCharge($bike){
         return Brand::where('bikename', $bike)->get();
     }
+    
 }
