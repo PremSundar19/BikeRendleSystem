@@ -111,7 +111,7 @@
                     </div>
                     <div class="form-group">
                         <input type="password" class="form-control" name="password" id="password"
-                            placeholder="- password -" required>
+                            placeholder="- Password -" required>
                     </div>
                     <div class="form-group">
                         <label for="loginType">Login Type</label> &nbsp; <b>:</b> &nbsp; &nbsp;

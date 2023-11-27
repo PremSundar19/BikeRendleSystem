@@ -12,7 +12,7 @@ return [
     | and used as needed; however, this mailer will be used by default.
     |
     */
-
+   
     'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
@@ -32,7 +32,9 @@ return [
     |            "postmark", "log", "array", "failover"
     |
     */
+ 
 
+  
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
@@ -92,7 +94,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'address' => env('MAIL_FROM_ADDRESS'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 

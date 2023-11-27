@@ -1,0 +1,17 @@
+  @if(Session::has('bookingmessage'))
+                <div class="alert alert-{{Session::get('class')}} justify-content-center text-center" role="alert">
+                    {{ Session::get('bookingmessage') }}
+                </div>
+                <script>
+                    setTimeout(function () {
+                        var alert = document.querySelector('.alert');
+                        alert.style.display = 'none';
+
+                        var status = "{{session('status')}}";
+                        if (status) {
+                             <?php session:: flush();?>
+                                window.location.href = '/dashboard';
+                        }
+                    }, 3500);
+                </script>
+                @endif

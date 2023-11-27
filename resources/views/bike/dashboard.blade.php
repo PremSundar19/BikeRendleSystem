@@ -64,7 +64,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="container  justify-content-center msgz">
+            <div class="container  justify-content-center" id="msgz">
                 <div class="alert alert-success text-center userName" role="alert">
                 </div>
             </div>
@@ -77,13 +77,12 @@
                     var alert = document.querySelector('.alert');
                     alert.style.display = 'none';
                     window.location.href = '/index';
-                }, 5000);
+                }, 2500);
             </script>
             @endif
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url('showBikeBookForm')}}">Book_Bike</a>
-
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" data-target="#contactUs" data-toggle="modal">Contact</a>
@@ -98,9 +97,6 @@
         <div id="message-container"></div>
         <div class="card">
             <div class="card-body">
-                <div class="bg-success">
-                    <span id="newEmployeeAddedMessage"></span>
-                </div>
                 <div class="bg-info  p-2  m-2">
                     <h5 class="text-center">Booked Bike Details</h5>
                 </div>
@@ -117,6 +113,7 @@
                             <th scope="col">Total Amount</th>
                             <th scope="col">Fine Amount</th>
                             <th scope="col">status</th>
+                            <th>Return</th>
                         </tr>
                     </thead>
                     <tbody id="BookedBikeData">
@@ -172,57 +169,72 @@
             var userId = "{{session('userId')}}"
             var firstName = "{{session('firstName')}}";
             var lastName = "{{session('lastName')}}";
-            $('.userName').text('Welcome ' + firstName + ' ' + lastName);
+            $('.userName').text(firstName + ' ' + lastName);
+
 
             $.ajax({
                 url: '/fetchBookingById/' + userId,
                 type: 'GET',
                 success: function (respone) {
-                    $('#BookedBikeData').empty();
-                    var tr = '';
+                    updateBooking(respone);
                     $.each(respone, function (index, booking) {
                         var id = booking.booking_id;
-                        var csrfToken = $('meta[name="csrf-token"]').attr('content');
                         $.ajax({
                             url: "{{url('calculateFine')}}",
                             type: 'POST',
                             data: { booking_id: id },
                             headers: {
-                                'X-CSRF-TOKEN': csrfToken
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
                             success: function (response) {
-                                console.log(hii);
-                                console.log(respone);
+                                updateBooking(respone);
                             }
                         })
-                        tr += '<tr>';
-                        tr += '<td>' + firstName + ' ' + lastName + '</td>';
-                        tr += '<td>' + booking.customer_email + '</td>';
-                        tr += '<td>' + booking.brand_name + '</td>';
-                        tr += '<td>' + booking.bike_name + '</td>';
-                        tr += '<td>' + booking.wanted_period + ' ' + booking.duration + '</td>';
-                        tr += '<td>' + booking.per_hour_rent + ' Rs' + '</td>';
-                        tr += '<td>' + booking.total_amount + ' Rs' + '</td>';
-                        tr += '<td>' + booking.fine_amount + '</td>';
-                        tr += '<td>' + booking.status + '</td>';
-                        tr += '</tr>';
                     })
-                    $('#BookedBikeData').append(tr);
                 }
             })
+            function updateBooking(respone) {
+                $('#BookedBikeData').empty();
+                var tr = '';
+                $.each(respone, function (index, booking) {
+                    tr += '<tr>';
+                    tr += '<td>' + booking.customer_name + '</td>';
+                    tr += '<td>' + booking.customer_email + '</td>';
+                    tr += '<td>' + booking.brand_name + '</td>';
+                    tr += '<td>' + booking.bike_name + '</td>';
+                    tr += '<td>' + booking.wanted_period + ' ' + booking.duration + '</td>';
+                    tr += '<td>' + booking.per_hour_rent + ' Rs' + '</td>';
+                    tr += '<td>' + booking.total_amount + ' Rs' + '</td>';
+                    tr += '<td>' + booking.fine_amount + ' Rs' + '</td>';
+                    tr += '<td>' + booking.status + '</td>';
+                   if(booking.status === "active"){
+                    tr += '<td><div class="d-flex">';
+                    tr += '<a class="btn btn-success btn-xs py-1" onclick="returnVehicle(' + "'" + booking.booking_id + "'" + ')">Return Bike</a>';
+                    tr += '</div></td>';
+                   }
+                    tr += '</tr>';
+                })
+                $('#BookedBikeData').append(tr);
+            }
 
 
             $('#logout').on('click', () => {
-                var alert = document.querySelector('.msgz');
-                alert.style.display = 'none';
-                $('.userName').text('');
+                console.log('inside logout clcik');
+                $(".msgz").fadeOut();
             })
         })
-
+        function returnVehicle(bookingId) {
+            console.log(bookingId);
+            $.ajax({
+                url: '/returnVehicle/' + bookingId,
+                type: 'GET',
+                success: function (respone) {
+                    console.log(hii);
+                }
+            })
+        }
     </script>
-    <script>
 
-    </script>
 </body>
 
 </html>

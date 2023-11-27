@@ -1,4 +1,4 @@
-</h1>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,78 +75,11 @@
                     <a class="nav-link" data-target="#addbikeModal" data-toggle="modal">AddBike</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{url('logout')}}">Logout</a>
+                    <a class="nav-link" href="{{url('logout_Admin')}}">Logout</a>
                 </li>
             </ul>
         </div>
     </nav>
-    <div class="container mt-2">
-        <div id="message-container"></div>
-        <div class="card">
-            <div class="card-body">
-                <div class="bg-success">
-                    <span id="newEmployeeAddedMessage"></span>
-                </div>
-                <div class="bg-info  p-2  m-2">
-                    <h5 class="text-dark text-center">Booked Bike Details</h5>
-                </div>
-                <table class="table  table-bordered table-stripted table-hover mt-3">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Gender</th>
-                            <th scope="col">Date Of Birth</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">salary</th>
-                            <th scope="col">City</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="Booked_bike_data">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!--contactus Modal -->
-    <div class="modal fade" id="contactUs" data-backdrop="static" data-keyboard="false" tabindex="-1"
-        aria-labelledby="contactUsLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="contactUsLabel">Contact Us - Jk Bikes Rental System</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal"
-                        aria-label="Close"><span>&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <p>If you have any questions or concerns, please feel free to contact us using the form below.</p>
-
-                    <form action="" method="post" class="form">
-                        @csrf
-                        <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" class="form-control" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">message</label>
-                            <textarea name="message" id="message" cols="30" rows="5"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="send" class="btn btn-primary">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </form>
-                    <hr>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Book Bike Modal -->
     <div class="modal fade " id="addbikeModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
@@ -193,10 +126,70 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div class="container mt-2">
+        <div id="message-container"></div>
+        <div class="card">
+            <div class="card-body">
+                <div class="bg-secondary  p-2  m-2">
+                    <h5 class="text-center">All Booked Bike Details</h5>
+                </div>
+                <table class="table  table-bordered table-stripted table-hover mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Model</th>
+                            <th scope="col">Duration</th>
+                            <th scope="col">Per/hr price</th>
+                            <th scope="col">Total Amount</th>
+                            <th scope="col">Fine Amount</th>
+                            <th scope="col">status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="BookedBikeData">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
 
+        $(document).ready(() => {
+
+            $.ajax({
+                url: '/fetchBookings',
+                type: 'GET',
+                success: function (respone) {
+                    $('#BookedBikeData').empty();
+                    var tr = '';
+                    $.each(respone, function (index, booking) {
+                        var id = booking.booking_id;
+                        tr += '<tr>';
+                        tr += '<td>' + booking.customer_name + '</td>';
+                        tr += '<td>' + booking.customer_email + '</td>';
+                        tr += '<td>' + booking.brand_name + '</td>';
+                        tr += '<td>' + booking.bike_name + '</td>';
+                        tr += '<td>' + booking.wanted_period + ' ' + booking.duration + '</td>';
+                        tr += '<td>' + booking.per_hour_rent + ' Rs' + '</td>';
+                        tr += '<td>' + booking.total_amount + ' Rs' + '</td>';
+                        tr += '<td>' + booking.fine_amount + '</td>';
+                        tr += '<td>' + booking.status + '</td>';
+                        // tr += '<td>'+ '<input type="number" >' +'</td>'
+                        tr += '</tr>';
+                    })
+                    $('#BookedBikeData').append(tr);
+                }
+            })
+
+            $('#logout').on('click', () => {
+                window.relocation.href = '/index';
+            })
+        })
+    </script>
 </body>
 
 </html>

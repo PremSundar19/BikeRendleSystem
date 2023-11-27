@@ -5,27 +5,9 @@
     <div class="container mt-5">
         <div class="row justify-content-center center-container">
             <div class="col-md-5">
-                <div id="message-container"></div>
-                @if(Session::has('bookingmessage'))
-                <div class="alert alert-{{Session::get('class')}} justify-content-center text-center" role="alert">
-                    {{ Session::get('bookingmessage') }}
-                </div>
-                <script>
-                    setTimeout(function () {
-                        var alert = document.querySelector('.alert');
-                        alert.style.display = 'none';
-
-                        var status = "{{session('status')}}";
-                        if (status) {
-                             <? php session:: flush();?>
-                                window.location.href = '/dashboard';
-                        }
-                    }, 3500);
-                </script>
-                @endif
                 <form action="{{url('saveBooking')}}" method="post" class="form">
-                    <h2 class="text-center text-success" style="display:inline;"><b>Book Bike</b></h2>
-                    <!-- <hr> -->
+                <div id="message-container"></div>
+                    <h3 class="text-center text-success" style="display:inline;">Book Bike</h3>
                     @csrf
                     <input type="hidden" name="bikeId" id="bikeId">
                     <input type="hidden" name="userId" id="userId" value="{{session('userId')}}">
@@ -145,6 +127,13 @@
                         <input type="number" id="mobile" class="form-control  @error('mobile') is-invalid @enderror"
                             name="mobile" placeholder="- Mobile Number -">
                         @error('mobile')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea class="form-control @error('address') is-invalid @enderror" id="address" rows="2" name="address"></textarea>
+                        @error('address')
                         <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>

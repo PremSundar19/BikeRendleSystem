@@ -31,6 +31,7 @@ Route::get('index', function () {
 Route::get('contactUs', [CustomerController::class, 'contactUs']);
 Route::get('dashboard', [CustomerController::class, 'dashboard']);
 Route::get('admindashboard', [CustomerController::class, 'admindashboard']);
+Route::get('logout_Admin',[CustomerController::class,'logout_Admin']);
 
 Route::get('showBikeBookForm', [BikeController::class, 'showBikeBookForm']);
 Route::post('storeBike', [BikeController::class, 'storeBike']);
@@ -43,3 +44,13 @@ Route::post('saveBooking', [BookingController::class, 'saveBooking']);
 Route::get('fetchBookingById/{userId}', [BookingController::class, 'fetchBookingById']);
 Route::get('checkAvailable/{bike}',[BookingController::class,'checkAvailable']);
 Route::post('calculateFine',[BookingController::class,'calculateFine']);
+Route::get('returnVehicle/{bookingId}',[BookingController::class,'returnVehicle']);
+
+
+Route::get('bill',function(){
+       return view('bike.bill');
+});
+
+
+
+Route::post('store',[CustomerController::class,'store']);

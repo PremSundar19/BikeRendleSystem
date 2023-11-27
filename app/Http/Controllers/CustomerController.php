@@ -60,7 +60,7 @@ class CustomerController extends Controller
         } else if ($type === "user") {
             $customer = Customer::where('email', $email)->first();
             if ($customer && Hash::check($password, $customer->password)) {
-                session(['userId' => $customer->id, 'firstName' => $customer->firstname, 'lastName' => $customer->lastname]);
+                session(['userId' => $customer->id, 'firstName' => 'welcome '.$customer->firstname, 'lastName' => $customer->lastname]);
                 return redirect('dashboard');
             }
         }
@@ -87,5 +87,8 @@ class CustomerController extends Controller
         Session::flash('message', 'You have been successfully logged out.');
         return redirect()->back();
 
+    }
+    public function logout_Admin(){
+        return redirect('index');
     }
 }
