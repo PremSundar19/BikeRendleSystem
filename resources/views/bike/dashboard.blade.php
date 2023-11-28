@@ -169,7 +169,10 @@
             var userId = "{{session('userId')}}"
             var firstName = "{{session('firstName')}}";
             var lastName = "{{session('lastName')}}";
+            console.log(firstName);
+           if(firstName !== ""){
             $('.userName').text(firstName + ' ' + lastName);
+           }
 
 
             $.ajax({
@@ -179,6 +182,7 @@
                     updateBooking(respone);
                     $.each(respone, function (index, booking) {
                         var id = booking.booking_id;
+                       if(booking.status === "need to return"){
                         $.ajax({
                             url: "{{url('calculateFine')}}",
                             type: 'POST',
@@ -190,6 +194,7 @@
                                 updateBooking(respone);
                             }
                         })
+                       }
                     })
                 }
             })
@@ -207,11 +212,11 @@
                     tr += '<td>' + booking.total_amount + ' Rs' + '</td>';
                     tr += '<td>' + booking.fine_amount + ' Rs' + '</td>';
                     tr += '<td>' + booking.status + '</td>';
-                   if(booking.status === "active"){
-                    tr += '<td><div class="d-flex">';
-                    tr += '<a class="btn btn-success btn-xs py-1" onclick="returnVehicle(' + "'" + booking.booking_id + "'" + ')">Return Bike</a>';
-                    tr += '</div></td>';
-                   }
+                    if (booking.status === "need to return") {
+                        tr += '<td><div class="d-flex">';
+                        tr += '<a class="btn btn-success btn-xs py-1" href="/returnVehicle/' + booking.booking_id + '">Return</a>';
+                        tr += '</div></td>';
+                    }
                     tr += '</tr>';
                 })
                 $('#BookedBikeData').append(tr);
@@ -223,16 +228,7 @@
                 $(".msgz").fadeOut();
             })
         })
-        function returnVehicle(bookingId) {
-            console.log(bookingId);
-            $.ajax({
-                url: '/returnVehicle/' + bookingId,
-                type: 'GET',
-                success: function (respone) {
-                    console.log(hii);
-                }
-            })
-        }
+    
     </script>
 
 </body>

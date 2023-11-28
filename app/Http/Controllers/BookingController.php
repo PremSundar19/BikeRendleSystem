@@ -15,8 +15,6 @@ class BookingController extends Controller
 
     public function saveBooking(Request $request)
     {
-        // dd($request);
-
         $request->validate([
             'bikeId' => 'required',
             'userId' => 'required',
@@ -33,8 +31,6 @@ class BookingController extends Controller
             'mobile' => 'required',
             'address' => 'required',
         ]);
-
-
         $bikeId = $request['bikeId'];
         $isAvailable = Booking::where('bike_id', $bikeId)->first();
         if ($isAvailable) {
@@ -55,7 +51,6 @@ class BookingController extends Controller
                 $duration = "Months";
             }
         }
-        // dd($duration);
         $booking = [
             'bike_id' => $bikeId,
             'user_id' => $request['userId'],
@@ -73,26 +68,12 @@ class BookingController extends Controller
             'address' => $request['address'],
             'created_at' => Carbon::now('Asia/Kolkata')->toDateTimeString(),
         ];
-
         return view('bike.bill', ['booking' => $booking]);
-
-        // $rowAffected = $booking->save();
-
-        // if ($rowAffected) {
-        //     Mail::to($booking->email)->send(new BookingConfirmation($booking));
-
-        //     Session::flash('bookingmessage', 'Booked Successfully');
-        //     Session::flash('class', 'success');
-        //     Session::flash('status', true);
-        //     return redirect()->back();
-        // }
     }
-    public function store(Request $request)
+    public function storeBooking(Request $request)
     {
         // dd($request->booking);
         $data = $request->booking;
-        //    dd($data->bike_id);
-        // Booking::create($request->booking);
 
         $booking = new Booking();
         $booking->bike_id = $data['bike_id'];
@@ -113,14 +94,23 @@ class BookingController extends Controller
         $booking->save();
         return response()->json(array('message' => 'Booked Successfully'));
     }
-     
-    public function returnvehicle($bookingId){
-    //    dd($bookingId);
-    $booking = DB::select('SELECT * FROM booking WHERE booking_id=?', [$bookingId]);
-    // dd($booking);
-    
-    // return redirect('bikeReturn');
-    return view('bike.bikeReturn', ['booking' => $booking]);
+
+    public function returnVehicle($bookingId)
+    {
+        $booking = DB::select('SELECT * FROM booking WHERE booking_id=?', [$bookingId]);
+        return view('bike.bikeReturn', ['booking' => $booking]);
+    }
+    public function updateVehicle(Request $request)
+    {
+        $rowAffected = DB::update('UPDATE booking SET status=? WHERE booking_id=?', ['bike returned', $request->booking_id]);
+        if ($rowAffected) {
+            Session::flash('message', 'Bike returned successfully');
+            Session::flash('class', 'success');
+        } else {
+            Session::flash('message', 'Sorry! Something Went Wrong');
+            Session::flash('class', 'danger');
+        }
+        return redirect()->back();
     }
     public function fetchBookings()
     {
@@ -134,7 +124,6 @@ class BookingController extends Controller
     public function checkAvailable($bike)
     {
         $checkAvailable = DB::select('SELECT * FROM booking WHERE bike_name=?', [$bike]);
-
         if ($checkAvailable) {
             return response()->json(array('isExists' => true));
         }

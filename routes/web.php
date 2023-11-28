@@ -24,14 +24,15 @@ Route::get('register', [CustomerController::class, 'showRegister']);
 Route::post('storeCustomer', [CustomerController::class, 'storeCustomer']);
 Route::get('login', [CustomerController::class, 'showLogin']);
 Route::post('verifyCustomer', [CustomerController::class, 'verifyCustomer']);
-Route::get('logout',[CustomerController::class,'logout']);
+Route::get('logout', [CustomerController::class, 'logout']);
 Route::get('index', function () {
     return view('bike.index');
 });
 Route::get('contactUs', [CustomerController::class, 'contactUs']);
 Route::get('dashboard', [CustomerController::class, 'dashboard']);
 Route::get('admindashboard', [CustomerController::class, 'admindashboard']);
-Route::get('logout_Admin',[CustomerController::class,'logout_Admin']);
+Route::get('fetchCustomers', [CustomerController::class,'fetchCustomers']);
+
 
 Route::get('showBikeBookForm', [BikeController::class, 'showBikeBookForm']);
 Route::post('storeBike', [BikeController::class, 'storeBike']);
@@ -42,15 +43,15 @@ Route::get('fetchBikePerCharge/{bike}', [BikeController::class, 'fetchBikePerCha
 Route::get('fetchBookings', [BookingController::class, 'fetchBookings']);
 Route::post('saveBooking', [BookingController::class, 'saveBooking']);
 Route::get('fetchBookingById/{userId}', [BookingController::class, 'fetchBookingById']);
-Route::get('checkAvailable/{bike}',[BookingController::class,'checkAvailable']);
-Route::post('calculateFine',[BookingController::class,'calculateFine']);
-Route::get('returnVehicle/{bookingId}',[BookingController::class,'returnVehicle']);
+Route::get('checkAvailable/{bike}', [BookingController::class, 'checkAvailable']);
+Route::post('calculateFine', [BookingController::class, 'calculateFine']);
+Route::get('returnVehicle/{bookingId}', [BookingController::class, 'returnVehicle']);
+Route::post('updateVehicle',[BookingController::class,'updateVehicle']);
+Route::post('storeBooking',[BookingController::class,'storeBooking']);
 
-
-Route::get('bill',function(){
-       return view('bike.bill');
+Route::get('bill', function () {
+    return view('bike.bill');
 });
 
 
 
-Route::post('store',[CustomerController::class,'store']);

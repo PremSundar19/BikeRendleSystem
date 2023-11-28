@@ -12,7 +12,16 @@ class BikeController extends Controller
         'brand_name'=>'required',
         'bike_name'=>'required',
         'bike_cc'=>'required',
+        'per_hour'=>'required',
        ]);
+
+       $brand = new Brand();
+       $brand->brand = $request->brand_name;   
+       $brand->bikename =$request->bike_name;
+       $brand->bikecc = $request->bike_cc;
+       $brand->perhour = $request->per_hour;
+       $brand->save();
+       return redirect('admindashboard')->with('message','Bike saved Successfully!');
     }
 
     public function showBikeBookForm(){
@@ -25,5 +34,5 @@ class BikeController extends Controller
     public function fetchBikePerCharge($bike){
         return Brand::where('bikename', $bike)->get();
     }
-    
+  
 }

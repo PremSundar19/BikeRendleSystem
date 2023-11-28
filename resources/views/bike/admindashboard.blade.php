@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,6 +48,15 @@
             box-sizing: border-box;
         }
     </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -70,20 +78,63 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
+            @if(Session::has('message'))
+            <div class="alert alert-danger text-center col-md-4" id="msg" role="alert" style="width: 300px;">
+                {{ Session::get('message') }}
+            </div>
+            <script>
+                setTimeout(function () {
+                    var alert = document.querySelector('.alert');
+                    alert.style.display = 'none';
+                }, 2500);
+            </script>
+            @endif
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
                     <a class="nav-link" data-target="#addbikeModal" data-toggle="modal">AddBike</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{url('logout_Admin')}}">Logout</a>
+                    <a class="nav-link listOfCustomers" data-target="#customers" data-toggle="modal">ViewUsers</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" id="logout">Logout</a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <!-- Book Bike Modal -->
-    <div class="modal fade " id="addbikeModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
-        aria-labelledby="addbikeModalLabel" aria-hidden="true">
+
+    <div class="modal fade" id="customers">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title black" id="customersmodal">Customers Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover table-bordered table-stripted">
+                        <thead>
+                            <tr>
+                                <th>firstName</th>
+                                <th>lastName</th>
+                                <th>Email </th>
+                                <th>dob</th>
+                                <th>age</th>
+                                <th>Mobile</th>
+                            </tr>
+                        </thead>
+                        <tbody class="customer_data">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bike Modal -->
+    <div class="modal fade " id="addbikeModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -92,36 +143,55 @@
                         aria-label="Close"><span>&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url('storeBike')}}" method="post" class="form">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" id="brand_name" name="brand_name"
-                                    placeholder="- Brand Name -" value="{{old('brand_name') ? : ''}}">
-                                @error('brand_name')
-                                <span class="text-danger">{{$message}}</span>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" id="bike_name" class="form-control" name="bike_name"
-                                    placeholder="- Bike Name -" value="{{old('bike_name') ? : ''}}">
-                                @error('bike_name')
-                                <span class="text-danger">{{$message}}</span>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
-                                <input type="number" id="bike_cc" class="form-control" name="bike_cc"
-                                    placeholder="- Bike CC -" value="{{old('bike_cc') ? : ''}}">
-                                @error('bike_cc')
-                                <span class="text-danger">{{$message}}</span>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
-                                <input type="submit" value="AddBook" class="btn btn-primary">
-                            </div>
-                        </div>
-                    </form>
-                    <hr>
+                    <table class="table-hover">
+                        <!-- <thead>
+                            <tr>
+                                <th>Brand Name</th>
+                                <th>Bike Name</th>
+                                <th>Bike CC</th>
+                                <th>per_hour</th>
+                            </tr>
+                        </thead> -->
+                        <tbody>
+                            <tr>
+                                <form action="{{url('storeBike')}}" method="post">
+                                    @csrf
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="brand_name" name="brand_name"
+                                                placeholder="- Brand Name -" value="{{old('brand_name') ? : ''}}"
+                                                required>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" id="bike_name" class="form-control" name="bike_name"
+                                                placeholder="- Bike Name -" value="{{old('bike_name') ? : ''}}"
+                                                required>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="number" id="bike_cc" class="form-control" name="bike_cc"
+                                                placeholder="- Bike CC -" value="{{old('bike_cc') ? : ''}}" required>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="number" id="per_hour" class="form-control" name="per_hour"
+                                                placeholder="- per hour Cost -" value="{{old('per_hour') ? : ''}}"
+                                                required>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="submit" value="AddBike" class="btn btn-primary">
+                                        </div>
+                                    </td>
+                                </form>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -154,20 +224,20 @@
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
     <script>
 
         $(document).ready(() => {
 
             $.ajax({
-                url: '/fetchBookings',
+                url: '{{url('fetchBookings')}}',
                 type: 'GET',
                 success: function (respone) {
                     $('#BookedBikeData').empty();
                     var tr = '';
                     $.each(respone, function (index, booking) {
-                        var id = booking.booking_id;
+                        var id = booking.customer_id;
                         tr += '<tr>';
                         tr += '<td>' + booking.customer_name + '</td>';
                         tr += '<td>' + booking.customer_email + '</td>';
@@ -176,17 +246,47 @@
                         tr += '<td>' + booking.wanted_period + ' ' + booking.duration + '</td>';
                         tr += '<td>' + booking.per_hour_rent + ' Rs' + '</td>';
                         tr += '<td>' + booking.total_amount + ' Rs' + '</td>';
-                        tr += '<td>' + booking.fine_amount + '</td>';
+                        tr += '<td>' + booking.fine_amount + ' Rs' + '</td>';
                         tr += '<td>' + booking.status + '</td>';
-                        // tr += '<td>'+ '<input type="number" >' +'</td>'
                         tr += '</tr>';
                     })
                     $('#BookedBikeData').append(tr);
                 }
             })
 
+            $('.listOfCustomers').on('click', () => {
+                $('.customer_data').empty();
+                $.ajax({
+                    url: '{{url('fetchCustomers')}}',
+                    type: 'GET',
+                    success: function (respone) {
+                        console.log(respone);
+                        var tr = '';
+                        $.each(respone, function (index, customer) {
+                            console.log(customer);
+                            tr += '<tr>';
+                            tr += '<td>' + customer.firstname + '</td>';
+
+                            if (customer.lastname === null) {
+                                tr += '<td></td>';
+                            } else {
+                                tr += '<td>' + customer.lastname + '</td>';
+                            }
+
+                            tr += '<td>' + customer.email + '</td>';
+                            tr += '<td>' + customer.dob + '</td>';
+                            tr += '<td>' + customer.age + '</td>';
+                            tr += '<td>' + customer.mobile + '</td>';
+                            tr += '<tr>';
+                        })
+                        $('.customer_data').append(tr);
+                    }
+                })
+
+            })
+
             $('#logout').on('click', () => {
-                window.relocation.href = '/index';
+                window.location.href = '/index';
             })
         })
     </script>

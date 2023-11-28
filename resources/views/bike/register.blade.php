@@ -14,7 +14,7 @@
                         var alert = document.querySelector('.alert');
                         alert.style.display = 'none';
                         window.location.href = '/index';
-                    }, 5000);
+                    }, 3500);
                 </script>
                 @endif
                 <form action="{{url('storeCustomer')}}" method="post" class="form">

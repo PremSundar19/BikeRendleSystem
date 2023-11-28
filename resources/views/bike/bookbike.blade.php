@@ -1,13 +1,14 @@
 @extends('layout.form')
 @section('content')
-
+<!-- tofler
+india mark justdail -->
 <body>
-    <div class="container mt-5">
+    <div class="container mt-3">
         <div class="row justify-content-center center-container">
             <div class="col-md-5">
                 <form action="{{url('saveBooking')}}" method="post" class="form">
                 <div id="message-container"></div>
-                    <h3 class="text-center text-success" style="display:inline;">Book Bike</h3>
+                    <h3 class="text-center text-success">Book Bike Enjoy The Ride</h3>
                     @csrf
                     <input type="hidden" name="bikeId" id="bikeId">
                     <input type="hidden" name="userId" id="userId" value="{{session('userId')}}">
@@ -86,7 +87,7 @@
                                 <option value="Hour">Hour</option>
                                 <option value="Day">Day</option>
                                 <option value="Week">Week</option>
-                                <option value="Month">Month</option>
+                                <!-- <option value="Month">Month</option> -->
                             </select>
                             <span class="text-danger selectDuration"></span>
                             @error('duration')
@@ -175,7 +176,7 @@
                     success: function (respone) {
                         $('#bike option').each(function () {
                             var bikeName = $(this).val();
-                            var matchBike = respone.find(bike => bikeName === bike.bike_name);
+                            var matchBike = respone.find(bike => bikeName === bike.bike_name && bike.status === "need to return");
                             if (bikeName === "- choose -") {
                                 $(this).addClass('black');
                             } else if (matchBike) {

@@ -87,7 +87,7 @@
         $(document).ready(() => {
             $('.pay').click(() => {
                 $.ajax({
-                    url: '{{url('store')}}',
+                    url: '{{url('storeBooking')}}',
                     type: 'POST',
                     data: {
                         booking : {!! json_encode($booking) !!},
@@ -95,11 +95,12 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (respone) {
+                console.log(respone);
                 $('#message-container').html('<div class="alert alert-success text-center">' + respone.message +'</div>');
                 setTimeout(() => {
-                    $('#message-container').empty();
-                    window.relocation.href = '/dashboard';
-                }, 2500);
+                        $('#message-container').empty();
+                        window.location.href = '/dashboard';
+                    }, 2500);
             }
           })
         })

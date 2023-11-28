@@ -85,7 +85,7 @@
         </div>
     </nav>
     <div class="">
-        <h1 style="color:white">Welcome to JK Bike Rendle System</h1>
+        <h1 style="color:white">Welcome to JK Bike Rental System</h1>
     </div>
     <div class="container mt-5">
         <div class="row justify-content-end center-container">
