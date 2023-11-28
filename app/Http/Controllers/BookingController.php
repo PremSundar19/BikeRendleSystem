@@ -133,12 +133,13 @@ class BookingController extends Controller
 
             $duration = $booking[0]->duration;
             $expectedReturnTime = Carbon::parse($booking[0]->created_at);
+            $wantedPeriod = $booking[0]->wanted_period;
             if ($duration === "Hour" || $duration === "Hours") {
-                $expectedReturnTime = $expectedReturnTime->addHours($booking[0]->wanted_period);
+                $expectedReturnTime = $expectedReturnTime->addHours($wantedPeriod);
             } else if ($duration === "Day" || $duration === "Days") {
-                $expectedReturnTime = $expectedReturnTime->addDays($booking[0]->wanted_period);
+                $expectedReturnTime = $expectedReturnTime->addDays($wantedPeriod);
             } else if ($duration === "Week" || $duration === "Weeks") {
-                $expectedReturnTime = $expectedReturnTime->addWeeks($booking[0]->wanted_period);
+                $expectedReturnTime = $expectedReturnTime->addWeeks($wantedPeriod);
             }
             $fine = 0;
             if ($currentDateTime > $expectedReturnTime) {
