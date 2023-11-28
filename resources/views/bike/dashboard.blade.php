@@ -104,8 +104,8 @@
                 <table class="table  table-bordered table-stripted table-hover mt-3">
                     <thead class="table-dark">
                         <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
+                            <!-- <th scope="col">Name</th> -->
+                            <!-- <th scope="col">Email</th> -->
                             <th scope="col">Brand</th>
                             <th scope="col">Model</th>
                             <th scope="col">Duration</th>
@@ -166,7 +166,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
         $(document).ready(() => {
-            var userId = "{{session('userId')}}"
+           
             var firstName = "{{session('firstName')}}";
             var lastName = "{{session('lastName')}}";
             console.log(firstName);
@@ -174,7 +174,7 @@
             $('.userName').text(firstName + ' ' + lastName);
            }
 
-
+           var userId = "{{session('userId')}}"
             $.ajax({
                 url: '/fetchBookingById/' + userId,
                 type: 'GET',
@@ -203,8 +203,8 @@
                 var tr = '';
                 $.each(respone, function (index, booking) {
                     tr += '<tr>';
-                    tr += '<td>' + booking.customer_name + '</td>';
-                    tr += '<td>' + booking.customer_email + '</td>';
+                    // tr += '<td>' + booking.customer_name + '</td>';
+                    // tr += '<td>' + booking.customer_email + '</td>';
                     tr += '<td>' + booking.brand_name + '</td>';
                     tr += '<td>' + booking.bike_name + '</td>';
                     tr += '<td>' + booking.wanted_period + ' ' + booking.duration + '</td>';

@@ -118,7 +118,7 @@ class BookingController extends Controller
     }
     public function checkAvailable($bike)
     {
-        $checkAvailable = DB::select('SELECT * FROM booking WHERE bike_name=?', [$bike]);
+        $checkAvailable = DB::select('SELECT * FROM booking WHERE bike_name=? and status=?', [$bike,'need to return']);
         if ($checkAvailable) {
             return response()->json(array('isExists' => true));
         }
@@ -129,28 +129,40 @@ class BookingController extends Controller
         $booking_id = $request['booking_id'];
         $booking = DB::select('SELECT * FROM booking WHERE booking_id=?', [$booking_id]);
         $currentDateTime = Carbon::now('Asia/Kolkata');
-        if ($booking) {
+        $currentTime = $currentDateTime->format('H:i:s');
+        $currentDate = $currentDateTime->format('Y-m-d');
 
+        if ($booking) {
             $duration = $booking[0]->duration;
             $expectedReturnTime = Carbon::parse($booking[0]->created_at);
-            $wantedPeriod = $booking[0]->wanted_period;
+
             if ($duration === "Hour" || $duration === "Hours") {
-                $expectedReturnTime = $expectedReturnTime->addHours($wantedPeriod);
+                $expectedReturnTime = $expectedReturnTime->addHours($booking[0]->wanted_period);
             } else if ($duration === "Day" || $duration === "Days") {
-                $expectedReturnTime = $expectedReturnTime->addDays($wantedPeriod);
+                $expectedReturnTime = $expectedReturnTime->addDays($booking[0]->wanted_period);
             } else if ($duration === "Week" || $duration === "Weeks") {
-                $expectedReturnTime = $expectedReturnTime->addWeeks($wantedPeriod);
+                $expectedReturnTime = $expectedReturnTime->addWeeks($booking[0]->wanted_period);
             }
             $fine = 0;
-            if ($currentDateTime > $expectedReturnTime) {
+
+            $expectedTime = $expectedReturnTime->format('H:i:s');
+            $expectedDate = $currentDateTime->format('Y-m-d');
+
+            // echo "currentDateTime : " . $currentTime . " expectedReturnTime : " . $expectedTime;
+            if ($expectedDate === $currentDate && $currentTime > $expectedTime) {
+                $hoursLate = $currentDateTime->diffInHours($expectedReturnTime);
+                echo $hoursLate;
+                $fine = $hoursLate * 10;
+            } elseif ($currentDateTime > $expectedReturnTime) {
                 $hoursLate = $currentDateTime->diffInHours($expectedReturnTime);
                 $fine = $hoursLate * 10;
             }
-            DB::update('UPDATE booking SET fine_amount=? WHERE BOOKING_ID=?', [$fine, $booking_id]);
+            DB::update('UPDATE booking SET fine_amount=? WHERE booking_id=?', [$fine, $booking_id]);
             return response()->json(['success' => true, 'fine' => $fine, 'message' => 'updated successfully']);
         } else {
-            return response()->json(['success' => false, 'message' => 'Booking not found']);
+            return response()->json(['success' => false, 'message' => 'Something Went Wrong']);
         }
     }
+
 
 }
