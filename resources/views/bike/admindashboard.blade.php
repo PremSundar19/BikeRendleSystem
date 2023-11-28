@@ -84,7 +84,7 @@
             </div>
             <script>
                 setTimeout(function () {
-                    var alert = document.querySelector('.alert');
+                    var alert = document.querySelector('#msg');
                     alert.style.display = 'none';
                 }, 2500);
             </script>

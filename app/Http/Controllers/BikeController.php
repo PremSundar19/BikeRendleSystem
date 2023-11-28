@@ -8,13 +8,6 @@ use DB;
 class BikeController extends Controller
 {
     public function storeBike(Request $request){
-       $request->validate([
-        'brand_name'=>'required',
-        'bike_name'=>'required',
-        'bike_cc'=>'required',
-        'per_hour'=>'required',
-       ]);
-
        $brand = new Brand();
        $brand->brand = $request->brand_name;   
        $brand->bikename =$request->bike_name;

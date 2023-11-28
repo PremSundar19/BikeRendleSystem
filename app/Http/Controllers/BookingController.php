@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\BookingConfirmation;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Session;
 use DB;
-use Mail;
 
 class BookingController extends Controller
 {
-
     public function saveBooking(Request $request)
     {
         $request->validate([
@@ -47,8 +44,6 @@ class BookingController extends Controller
                 $duration = "Days";
             } else if ($duration === "Week") {
                 $duration = "Weeks";
-            } else if ($duration === "Month") {
-                $duration = "Months";
             }
         }
         $booking = [
@@ -72,7 +67,7 @@ class BookingController extends Controller
     }
     public function storeBooking(Request $request)
     {
-        // dd($request->booking);
+
         $data = $request->booking;
 
         $booking = new Booking();
@@ -144,8 +139,6 @@ class BookingController extends Controller
                 $expectedReturnTime = $expectedReturnTime->addDays($booking[0]->wanted_period);
             } else if ($duration === "Week" || $duration === "Weeks") {
                 $expectedReturnTime = $expectedReturnTime->addWeeks($booking[0]->wanted_period);
-            } else if ($duration === "Month" || $duration === "Months") {
-                $expectedReturnTime = $expectedReturnTime->addMonth($booking[0]->wanted_period);
             }
             $fine = 0;
             if ($currentDateTime > $expectedReturnTime) {
