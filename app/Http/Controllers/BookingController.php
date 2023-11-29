@@ -63,6 +63,7 @@ class BookingController extends Controller
             'address' => $request['address'],
             'created_at' => Carbon::now('Asia/Kolkata')->toDateTimeString(),
         ];
+    
         return view('bike.bill', ['booking' => $booking]);
     }
     public function storeBooking(Request $request)
@@ -93,19 +94,52 @@ class BookingController extends Controller
     public function returnVehicle($bookingId)
     {
         $booking = DB::select('SELECT * FROM booking WHERE booking_id=?', [$bookingId]);
-        return view('bike.bikeReturn', ['booking' => $booking]);
-    }
-    public function updateVehicle(Request $request)
-    {
-        $rowAffected = DB::update('UPDATE booking SET status=? WHERE booking_id=?', ['bike returned', $request->booking_id]);
-        if ($rowAffected) {
-            Session::flash('message', 'Bike returned successfully');
-            Session::flash('class', 'success');
-        } else {
-            Session::flash('message', 'Sorry! Something Went Wrong');
-            Session::flash('class', 'danger');
+        $currentDateTime = Carbon::now('Asia/Kolkata');
+        $return_date = $currentDateTime->format('Y-m-d');
+        $return_time = $currentDateTime->format('H:i:s');
+
+        $duration = $booking[0]->duration;
+        $expectedReturnTime = Carbon::parse($booking[0]->created_at);
+
+        if ($duration === "Hour" || $duration === "Hours") {
+            $expectedReturnTime = $expectedReturnTime->addHours($booking[0]->wanted_period);
+        } else if ($duration === "Day" || $duration === "Days") {
+            $expectedReturnTime = $expectedReturnTime->addDays($booking[0]->wanted_period);
+        } else if ($duration === "Week" || $duration === "Weeks") {
+            $expectedReturnTime = $expectedReturnTime->addWeeks($booking[0]->wanted_period);
         }
-        return redirect()->back();
+
+        $booked_date = $currentDateTime->format('Y-m-d');
+        $booked_time = $expectedReturnTime->format('H:i:s');
+
+        $data = [
+            'booking_id' => $booking[0]->booking_id,
+            'customer_name' => $booking[0]->customer_name,
+            'customer_email' => $booking[0]->customer_email,
+            'brand_name' => $booking[0]->brand_name,
+            'bike_name' => $booking[0]->bike_name,
+            'paid_amount' => $booking[0]->total_amount,
+            'fine_amount' => $booking[0]->fine_amount,
+            'booked_date' => $booked_date,
+            'booked_time' => $booked_time,
+            'return_date' => $return_date,
+            'return_time' => $return_time,
+            'address' => $booking[0]->address,
+            'mobile' => $booking[0]->mobile,
+            'perhr' => $booking[0]->per_hour_rent,
+            'duration' => $booking[0]->duration,
+            'wanted_period' => $booking[0]->wanted_period,
+
+        ];
+        return session('userId') ? view('bike.bikeReturn', ['booking' => $data]): redirect('index');
+    }
+
+
+    public function updateVehicleById($bookingId)
+    {
+        $rowAffected = DB::update('UPDATE booking SET status=? WHERE booking_id=?', ['bike returned', $bookingId]);
+        return response()->json(array('message' => 'Bike returned successfully', 'class' => 'success'));
+
     }
     public function fetchBookings()
     {
@@ -118,7 +152,7 @@ class BookingController extends Controller
     }
     public function checkAvailable($bike)
     {
-        $checkAvailable = DB::select('SELECT * FROM booking WHERE bike_name=? and status=?', [$bike,'need to return']);
+        $checkAvailable = DB::select('SELECT * FROM booking WHERE bike_name=? and status=?', [$bike, 'need to return']);
         if ($checkAvailable) {
             return response()->json(array('isExists' => true));
         }
@@ -151,7 +185,7 @@ class BookingController extends Controller
             // echo "currentDateTime : " . $currentTime . " expectedReturnTime : " . $expectedTime;
             if ($expectedDate === $currentDate && $currentTime > $expectedTime) {
                 $hoursLate = $currentDateTime->diffInHours($expectedReturnTime);
-                echo $hoursLate;
+                // echo $hoursLate;
                 $fine = $hoursLate * 10;
             } elseif ($currentDateTime > $expectedReturnTime) {
                 $hoursLate = $currentDateTime->diffInHours($expectedReturnTime);

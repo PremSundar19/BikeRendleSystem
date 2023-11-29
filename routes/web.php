@@ -46,12 +46,10 @@ Route::get('fetchBookingById/{userId}', [BookingController::class, 'fetchBooking
 Route::get('checkAvailable/{bike}', [BookingController::class, 'checkAvailable']);
 Route::post('calculateFine', [BookingController::class, 'calculateFine']);
 Route::get('returnVehicle/{bookingId}', [BookingController::class, 'returnVehicle']);
-Route::post('updateVehicle',[BookingController::class,'updateVehicle']);
+Route::get('updateVehicleById/{bookingId}',[BookingController::class,'updateVehicleById']);  
 Route::post('storeBooking',[BookingController::class,'storeBooking']);
 
-Route::get('bill', function () {
-    return view('bike.bill');
-});
+
 
 
 

@@ -18,7 +18,7 @@ class BikeController extends Controller
     }
 
     public function showBikeBookForm(){
-        return view('bike.bookbike');
+        return session('userId') ? view('bike.bookbike') : redirect('index');
     }
 
     public function fetchBikes($brand){

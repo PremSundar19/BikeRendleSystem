@@ -85,7 +85,7 @@
                     <a class="nav-link" href="{{url('showBikeBookForm')}}">Book_Bike</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" data-target="#contactUs" data-toggle="modal">Contact</a>
+                    <!-- <a class="nav-link" data-target="#contactUs" data-toggle="modal">Contact</a> -->
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url('logout')}}" id="logout">LogOut</a>
@@ -113,7 +113,7 @@
                             <th scope="col">Total Amount</th>
                             <th scope="col">Fine Amount</th>
                             <th scope="col">status</th>
-                            <th>Return</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="BookedBikeData">
@@ -166,15 +166,15 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
         $(document).ready(() => {
-           
+
             var firstName = "{{session('firstName')}}";
             var lastName = "{{session('lastName')}}";
             console.log(firstName);
-           if(firstName !== ""){
-            $('.userName').text(firstName + ' ' + lastName);
-           }
+            if (firstName !== "") {
+                $('.userName').text(firstName + ' ' + lastName);
+            }
 
-           var userId = "{{session('userId')}}"
+            var userId = "{{session('userId')}}"
             $.ajax({
                 url: '/fetchBookingById/' + userId,
                 type: 'GET',
@@ -182,19 +182,19 @@
                     updateBooking(respone);
                     $.each(respone, function (index, booking) {
                         var id = booking.booking_id;
-                       if(booking.status === "need to return"){
-                        $.ajax({
-                            url: "{{url('calculateFine')}}",
-                            type: 'POST',
-                            data: { booking_id: id },
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function (response) {
-                                updateBooking(respone);
-                            }
-                        })
-                       }
+                        if (booking.status === "need to return") {
+                            $.ajax({
+                                url: "{{url('calculateFine')}}",
+                                type: 'POST',
+                                data: { booking_id: id },
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                success: function (response) {
+                                    updateBooking(respone);
+                                }
+                            })
+                        }
                     })
                 }
             })
@@ -228,7 +228,7 @@
                 $(".msgz").fadeOut();
             })
         })
-    
+
     </script>
 
 </body>

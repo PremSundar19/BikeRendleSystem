@@ -4,98 +4,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Bike Rental Bill</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .form {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(55, 75, 85, 0.5);
-        }
 
-        .center-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
 </head>
 
 <body>
-
-    <div class="container mt-5">
-        <div class="row content-justify-center center-container">
-            <div class="col-md-5">
-                @if(Session::has('message'))
-                <div class="alert alert-{{Session::get('class')}} justify-content-center text-center" id="msg" role="alert">
-                    {{ Session::get('message') }}
-                </div>
-                <script>
-                    setTimeout(function () {
-                        var alert = document.querySelector('.alert');
-                        alert.style.display = 'none';
-                        window.location.href = '/dashboard';
-                    }, 3000);
-                </script>
-                @endif
-                <form action="{{url('updateVehicle')}}" method="post" class="form">
-                    <h4 class="text-success text-center">Bike Return</h4>
-                    <hr>
-                    @csrf
-                    @if($booking)
-                    <input type="hidden" class="form-control" name="booking_id" id="booking_id"
-                        value="{{ $booking[0]->booking_id }}">
-                    <div class="form-group">
-                        <label for="name">Customer Name</label>
-                        <input type="text" class="form-control" name="name" id="name" readonly
-                            value="{{ $booking[0]->customer_name }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Customer Email</label>
-                        <input type="email" class="form-control" name="email" id="email" readonly
-                            value="{{ $booking[0]->customer_email }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="brand">Brand Name</label>
-                        <input type="text" class="form-control" name="brand" id="brand" readonly
-                            value="{{ $booking[0]->brand_name }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="bikename">Bike Name</label>
-                        <input type="text" class="form-control" name="bikename" id="bikename" readonly
-                            value="{{ $booking[0]->bike_name }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="paidamount">Paid Amount</label>
-                        <input type="text" class="form-control" name="paidamount" id="paidamount" readonly
-                            value="{{ $booking[0]->total_amount }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="fineamount">Fine Amount</label>
-                        <input type="text" class="form-control" name="fineamount" id="fineamount" readonly
-                            value="{{ $booking[0]->fine_amount }}">
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        @if($booking[0]->fine_amount === 0)
-                        <input type="submit" value="Return" class="btn btn-primary btn-xs py-0">
-                        @endif
-                        @if($booking[0]->fine_amount > 0)
-                        <input type="submit" value="Pay" class="btn btn-primary btn-xs py-0">
-                        @endif
-                        <a href="{{url('dashboard')}}" class="btn btn-success btn-xs py-0">Close</a>
-                    </div>
-                    @endif
-                
-                </form>
+    <div class="container">
+        <div class="row content-justify-center">
+            <div class="col-md-6">
+                <div id="message-container"></div>
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+            <h2 class="text-center">Bike Rental Bill</h2>
+            <hr>
+            <div class="col-md-4">
+                <address>
+                    <strong>JK Bike Rental Company</strong><br>
+                    123 Gandhi Street<br>
+                    Chennai-600123<br>
+                    jk123@bikerental.com<br>
+                    99865 31507
+                </address>
+            </div>
+            <div class="col-md-4">
+                <strong>Bike Booked Details</strong>
+                <ul class="list-unstyled">
+                    <li><strong>Book Date &nbsp; &nbsp;:</strong> {{$booking['booked_date']}}</li>
+                    <li><strong>Book Time &nbsp; &nbsp;:</strong> {{$booking['booked_time']}}</li>
+                    <li><strong>Return Date &nbsp;:</strong> {{$booking['return_date']}}</li>
+                    <li><strong>Return Time &nbsp;:</strong> {{$booking['return_time']}}</li>
+                </ul>
+            </div>
+            <div class="col-md-4 text-end">
+                <h3>Bill To</h3>
+                <address>
+                    <strong> {{$booking['customer_name']}}</strong><br>
+                    {{$booking['address']}} <br>
+                    {{$booking['customer_email']}} <br>
+                    {{$booking['mobile']}}
+                </address>
+            </div>
+        </div>
+        <hr>
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Bike</th>
+                    <th scope="col">Rate per Hour</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Paid Amount</th>
+                    <th scope="col">Fine Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{$booking['brand_name']}}</td>
+                    <td>{{$booking['bike_name']}}</td>
+                    <td>{{$booking['perhr']}} Rs</td>
+                    <td> {{$booking['wanted_period']}} {{$booking['duration']}}</td>
+                    <td>{{$booking['paid_amount']}} Rs</td>
+                    <td>{{$booking['fine_amount']}} Rs</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-end"><strong>Total</strong></td>
+                    <td>{{$booking['fine_amount']}} Rs</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="text-end mt-4">
+            @if($booking['fine_amount'] === 0)
+            <button type="button" class="btn btn-primary pay btn-xs py-0">Return</button>
+            @endif
+            @if($booking['fine_amount'] > 0)
+            <button type="button" class="btn btn-primary pay btn-xs py-0">Pay Fine</button>
+            @endif
+            <a href="{{url('dashboard')}}" class="btn btn-secondary btn-xs py-0">Cancel</a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
+    <script>
+        $(document).ready(() => {
+            $('.pay').on('click', () => {
+                var bookingId = {{ $booking['booking_id']}};
+            console.log(bookingId);
+            $.ajax({
+                url: '/updateVehicleById/' + bookingId,
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }, success: function (response) {
+                    $('#message-container').html('<div class="alert alert-success text-center">' + response.message + '</div>');
+                    setTimeout(() => {
+                        $('#message-container').empty();
+                        window.location.href = '/dashboard';
+                    }, 2500);
+                }
+            })
+        })
+        })
+    </script>
 </body>
 
 </html>

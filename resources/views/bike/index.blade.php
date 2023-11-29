@@ -79,7 +79,7 @@
                     <a class="nav-link" href="#">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-target="#contactUs" data-toggle="modal">Contact</a>
+                    <!-- <a class="nav-link" data-target="#contactUs" data-toggle="modal">Contact</a> -->
                 </li>
             </ul>
         </div>

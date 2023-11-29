@@ -56,16 +56,14 @@ class CustomerController extends Controller
 
         if ($type === "admin" && $email === "admin123@gmail.com" && $password === "Admin@123") {
             session(['adminId' => 1]);
-            return redirect('admindashboard');
+            return $this->admindashboard();
         } else if ($type === "user") {
             $customer = Customer::where('email', $email)->first();
             if ($customer && Hash::check($password, $customer->password)) {
                 session(['userId' => $customer->id, 'firstName' => 'welcome '.$customer->firstname, 'lastName' => $customer->lastname]);
-                return redirect('dashboard');
+                return $this->dashboard();
             }
         }
-        // return session('admin_id') ? view('hospital.admindashboard') : redirect('index');
-
         return redirect('index')->with('indexmessage', 'Email or Password is invalid');
     }
     public function contactUs()
@@ -74,11 +72,11 @@ class CustomerController extends Controller
     }
     public function dashboard()
     {
-        return view('bike.dashboard');
+        return session('userId') ? view('bike.dashboard') : redirect('index');
     }
     public function admindashboard()
     {
-        return view('bike.admindashboard');
+        return session('adminId') ? view('bike.admindashboard') : redirect('index');
     }
 
     public function logout()
