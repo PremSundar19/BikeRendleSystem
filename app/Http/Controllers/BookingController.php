@@ -185,8 +185,10 @@ class BookingController extends Controller
             // echo "currentDateTime : " . $currentTime . " expectedReturnTime : " . $expectedTime;
             if ($expectedDate === $currentDate && $currentTime > $expectedTime) {
                 $hoursLate = $currentDateTime->diffInHours($expectedReturnTime);
-                // echo $hoursLate;
-                $fine = $hoursLate * 10;
+                $amount = $booking[0]->per_hour_rent;
+                $part = 10;
+                $fineValue = ($part/$amount) * 100;
+                $fine = $hoursLate * $fineValue;
             } elseif ($currentDateTime > $expectedReturnTime) {
                 $hoursLate = $currentDateTime->diffInHours($expectedReturnTime);
                 $fine = $hoursLate * 10;
