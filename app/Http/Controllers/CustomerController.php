@@ -78,7 +78,7 @@ class CustomerController extends Controller
     public function logout()
     {
         session::flush();
-        Session::flash('message', 'You have been successfully logged out.');
+        // Session::flash('message', 'You have been successfully logged out.');
         return redirect()->back();
     }
     public function fetchCustomers(){

@@ -77,7 +77,7 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             @if(Session::has('message'))
-            <div class="alert alert-danger text-center col-md-4" id="msg" role="alert" style="width: 300px;">
+            <div class="alert alert-danger text-center col-md-6" id="msg" role="alert" style="width: 300px;">
                 {{ Session::get('message') }}
             </div>
             <script>
