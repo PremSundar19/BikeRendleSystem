@@ -72,49 +72,15 @@
                     <td>{{$booking['fine_amount']}} Rs</td>
                 </tr>
             </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5" class="text-end"><strong>Total</strong></td>
-                    <td>{{$booking['fine_amount']}} Rs</td>
-                </tr>
-            </tfoot>
         </table>
         <div class="text-end mt-4">
-            @if($booking['fine_amount'] === 0)
-            <button type="button" class="btn btn-primary pay btn-xs py-0">Return</button>
-            @endif
-            @if($booking['fine_amount'] > 0)
-            <button type="button" class="btn btn-primary pay btn-xs py-0">Pay Fine</button>
-            @endif
-            <a href="{{url('dashboard')}}" class="btn btn-secondary btn-xs py-0">Cancel</a>
+           
+            <a href="{{url('dashboard')}}" class="btn btn-secondary btn-xs py-0">Back</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(() => {
-
-            $('.pay').click(() => {
-                $.ajax({
-                    url: '{{url('updateVehicle')}}',
-                    type: 'POST',
-                    data: {
-                        booking: {!! json_encode($booking) !!},
-            }, headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-                success: function (respone) {
-                    console.log(respone);
-                    $('#message-container').html('<div class="alert alert-success text-center">' + respone.message + '</div>');
-                    setTimeout(() => {
-                        $('#message-container').empty();
-                        window.location.href = '/dashboard';
-                    }, 2500);
-                }
-          })
-        })
-        })
-    </script>
+    
 </body>
 
 </html>

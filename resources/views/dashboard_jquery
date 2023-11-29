@@ -1,0 +1,80 @@
+//  $(document).ready(() => {
+
+//             var firstName = "{{session('firstName')}}";
+//             var lastName = "{{session('lastName')}}";
+//             console.log(firstName);
+//             if (firstName !== "") {
+//                 $('.userName').text(firstName + ' ' + lastName);
+//             }
+
+//             var userId = "{{session('userId')}}"
+//             $.ajax({
+//                 url: '/fetchBookingById/' + userId,
+//                 type: 'GET',
+//                 success: function (respone) {
+//                     updateBooking(respone);
+//                     $.each(respone, function (index, booking) {
+//                         var id = booking.booking_id;
+//                         if (booking.status === "need to return") {
+//                             $.ajax({
+//                                 url: "{{url('calculateFine')}}",
+//                                 type: 'POST',
+//                                 data: { booking_id: id },
+//                                 headers: {
+//                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//                                 },
+//                                 success: function (response) {
+//                                     updateBooking(respone);
+//                                 }
+//                             })
+//                         }
+//                     })
+//                 }
+//             })
+//             function updateBooking(respone) {
+//                 $('#BookedBikeData').empty();
+//                 var tr = '';
+//                 $.each(respone, function (index, booking) {
+//                     tr += '<tr>';
+//                     // tr += '<td>' + booking.customer_name + '</td>';
+//                     // tr += '<td>' + booking.customer_email + '</td>';
+//                     tr += '<td>' + booking.brand_name + '</td>';
+//                     tr += '<td>' + booking.bike_name + '</td>';
+//                     tr += '<td>' + booking.wanted_period + ' ' + booking.duration + '</td>';
+//                     tr += '<td>' + booking.per_hour_rent + ' Rs' + '</td>';
+//                     tr += '<td>' + booking.total_amount + ' Rs' + '</td>';
+//                     tr += '<td>' + booking.fine_amount + ' Rs' + '</td>';
+//                     tr += '<td>' + booking.status + '</td>';
+//                     tr += '<td><div class="d-flex">';
+//                     if (booking.status === "need to return") {
+//                         tr += '<a class="btn btn-success btn-xs py-1" href="/returnVehicle/' + booking.booking_id + '">Return</a>';
+//                     }
+//                     if(booking.status === "bike returned"){
+//                         tr += '<a class="btn btn-success btn-xs py-1" href="/returnVehicle/' + booking.booking_id + '">view bill</a>';
+//                     }
+//                     tr += '</div></td>';
+//                     tr += '</tr>';
+//                 })
+//                 $('#BookedBikeData').append(tr);
+//             }
+
+//         })
+
+
+//         $('.pay').on('click', () => {
+//             var bookingId = {{ $booking['booking_id']}};
+//         console.log(bookingId);
+//         $.ajax({
+//             url: '/updateVehicleById/' + bookingId,
+//             type: 'GET',
+//             headers: {
+//                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//             }, success: function (response) {
+//                 $('#message-container').html('<div class="alert alert-success text-center">' + response.message + '</div>');
+//                 setTimeout(() => {
+//                     $('#message-container').empty();
+//                     window.location.href = '/dashboard';
+//                 }, 2500);
+//             }
+//         })
+//     })

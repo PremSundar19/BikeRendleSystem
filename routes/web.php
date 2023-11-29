@@ -46,9 +46,9 @@ Route::get('fetchBookingById/{userId}', [BookingController::class, 'fetchBooking
 Route::get('checkAvailable/{bike}', [BookingController::class, 'checkAvailable']);
 Route::post('calculateFine', [BookingController::class, 'calculateFine']);
 Route::get('returnVehicle/{bookingId}', [BookingController::class, 'returnVehicle']);
-Route::get('updateVehicleById/{bookingId}',[BookingController::class,'updateVehicleById']);  
+Route::post('updateVehicle',[BookingController::class,'updateVehicle']);
 Route::post('storeBooking',[BookingController::class,'storeBooking']);
-
+Route::get('showBill/{bookingId}',[BookingController::class,'showBill']);
 
 
 

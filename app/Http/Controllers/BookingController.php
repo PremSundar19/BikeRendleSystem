@@ -129,11 +129,17 @@ class BookingController extends Controller
     }
 
 
-    public function updateVehicleById($bookingId)
-    {
-        $rowAffected = DB::update('UPDATE booking SET status=? WHERE booking_id=?', ['bike returned', $bookingId]);
+    
+    public function updateVehicle(Request $request){
+        $data = $request->booking;
+        $rowAffected = DB::update('UPDATE booking SET status=?,return_date=?,return_time=? WHERE booking_id=?', ['bike returned', $data['return_date'],$data['return_time'],$data['booking_id']]);
         return response()->json(array('message' => 'Bike returned successfully', 'class' => 'success'));
     }
+
+   public function  showBill($bookingId){
+     $booking = Booking::where('booking_id',$bookingId)->first();
+     return view('bike.showbill', ['booking' => $booking]);
+   }
     public function fetchBookings()
     {
         return Booking::all();

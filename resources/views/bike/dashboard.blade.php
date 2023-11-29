@@ -166,45 +166,34 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
         $(document).ready(() => {
-
             var firstName = "{{session('firstName')}}";
             var lastName = "{{session('lastName')}}";
-            console.log(firstName);
+         
             if (firstName !== "") {
                 $('.userName').text(firstName + ' ' + lastName);
             }
+            displaydata();
 
-            var userId = "{{session('userId')}}"
-            $.ajax({
-                url: '/fetchBookingById/' + userId,
-                type: 'GET',
-                success: function (respone) {
-                    updateBooking(respone);
-                    $.each(respone, function (index, booking) {
-                        var id = booking.booking_id;
-                        if (booking.status === "need to return") {
-                            $.ajax({
-                                url: "{{url('calculateFine')}}",
-                                type: 'POST',
-                                data: { booking_id: id },
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                success: function (response) {
-                                    updateBooking(respone);
-                                }
-                            })
-                        }
-                    })
-                }
-            })
-            function updateBooking(respone) {
+            function displaydata() {
+                var userId = "{{session('userId')}}";
+                $.ajax({
+                    url: '/fetchBookingById/' + userId,
+                    type: 'GET',
+                    success: function (response) {
+                        $.each(response, function (index, booking) {
+                            var id = booking.booking_id;
+                            updateFine(id, booking.status);
+                        });
+                        updateBooking(response);
+                    }
+                });
+            }
+
+            function updateBooking(response) {
                 $('#BookedBikeData').empty();
                 var tr = '';
-                $.each(respone, function (index, booking) {
+                $.each(response, function (index, booking) {
                     tr += '<tr>';
-                    // tr += '<td>' + booking.customer_name + '</td>';
-                    // tr += '<td>' + booking.customer_email + '</td>';
                     tr += '<td>' + booking.brand_name + '</td>';
                     tr += '<td>' + booking.bike_name + '</td>';
                     tr += '<td>' + booking.wanted_period + ' ' + booking.duration + '</td>';
@@ -212,17 +201,39 @@
                     tr += '<td>' + booking.total_amount + ' Rs' + '</td>';
                     tr += '<td>' + booking.fine_amount + ' Rs' + '</td>';
                     tr += '<td>' + booking.status + '</td>';
+                    if (booking.status === "bike returned") {
+                        tr += '<td><div class="d-flex">';
+                        tr += '<a class="btn btn-secondary btn-xs py-1" href="/showBill/' + booking.booking_id + '">view bill</a>';
+                        tr += '</div></td>';
+                    }
                     if (booking.status === "need to return") {
                         tr += '<td><div class="d-flex">';
                         tr += '<a class="btn btn-success btn-xs py-1" href="/returnVehicle/' + booking.booking_id + '">Return</a>';
                         tr += '</div></td>';
                     }
+                  
                     tr += '</tr>';
-                })
+                });
                 $('#BookedBikeData').append(tr);
             }
 
-        })
+            function updateFine(id, status) {
+                if (status === "need to return") {
+                    $.ajax({
+                        url: "{{url('calculateFine')}}",
+                        type: 'POST',
+                        data: { booking_id: id },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            // displaydata();
+                        }
+                    });
+                }
+            }
+        });
+
 
     </script>
 
