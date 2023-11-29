@@ -68,9 +68,7 @@ class BookingController extends Controller
     }
     public function storeBooking(Request $request)
     {
-
         $data = $request->booking;
-
         $booking = new Booking();
         $booking->bike_id = $data['bike_id'];
         $booking->user_id = $data['user_id'];
@@ -97,10 +95,8 @@ class BookingController extends Controller
         $currentDateTime = Carbon::now('Asia/Kolkata');
         $return_date = $currentDateTime->format('Y-m-d');
         $return_time = $currentDateTime->format('H:i:s');
-
         $duration = $booking[0]->duration;
         $expectedReturnTime = Carbon::parse($booking[0]->created_at);
-
         if ($duration === "Hour" || $duration === "Hours") {
             $expectedReturnTime = $expectedReturnTime->addHours($booking[0]->wanted_period);
         } else if ($duration === "Day" || $duration === "Days") {
@@ -108,10 +104,8 @@ class BookingController extends Controller
         } else if ($duration === "Week" || $duration === "Weeks") {
             $expectedReturnTime = $expectedReturnTime->addWeeks($booking[0]->wanted_period);
         }
-
         $booked_date = $currentDateTime->format('Y-m-d');
         $booked_time = $expectedReturnTime->format('H:i:s');
-
         $data = [
             'booking_id' => $booking[0]->booking_id,
             'customer_name' => $booking[0]->customer_name,
@@ -139,7 +133,6 @@ class BookingController extends Controller
     {
         $rowAffected = DB::update('UPDATE booking SET status=? WHERE booking_id=?', ['bike returned', $bookingId]);
         return response()->json(array('message' => 'Bike returned successfully', 'class' => 'success'));
-
     }
     public function fetchBookings()
     {
@@ -165,11 +158,9 @@ class BookingController extends Controller
         $currentDateTime = Carbon::now('Asia/Kolkata');
         $currentTime = $currentDateTime->format('H:i:s');
         $currentDate = $currentDateTime->format('Y-m-d');
-
         if ($booking) {
             $duration = $booking[0]->duration;
             $expectedReturnTime = Carbon::parse($booking[0]->created_at);
-
             if ($duration === "Hour" || $duration === "Hours") {
                 $expectedReturnTime = $expectedReturnTime->addHours($booking[0]->wanted_period);
             } else if ($duration === "Day" || $duration === "Days") {
@@ -178,11 +169,8 @@ class BookingController extends Controller
                 $expectedReturnTime = $expectedReturnTime->addWeeks($booking[0]->wanted_period);
             }
             $fine = 0;
-
             $expectedTime = $expectedReturnTime->format('H:i:s');
             $expectedDate = $currentDateTime->format('Y-m-d');
-
-            // echo "currentDateTime : " . $currentTime . " expectedReturnTime : " . $expectedTime;
             if ($expectedDate === $currentDate && $currentTime > $expectedTime) {
                 $hoursLate = $currentDateTime->diffInHours($expectedReturnTime);
                 $amount = $booking[0]->per_hour_rent;

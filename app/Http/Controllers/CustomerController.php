@@ -17,8 +17,7 @@ class CustomerController extends Controller
     }
     public function storeCustomer(Request $request)
     {
-        // dd($request);
-        $vali = $request->validate([
+        $request->validate([
             'firstname' => 'required|string|regex:/^[a-zA-Z.\s]+$/',
             'dob' => 'required',
             'age' => 'required',
@@ -48,12 +47,9 @@ class CustomerController extends Controller
         $email = $request['email'];
         $password = $request['password'];
         $type = $request['type'];
-
         if ($type === null) {
             return redirect('index')->with('indexmessage', 'Please select type');
         }
-
-
         if ($type === "admin" && $email === "admin123@gmail.com" && $password === "Admin@123") {
             session(['adminId' => 1]);
             return $this->admindashboard();
@@ -61,7 +57,7 @@ class CustomerController extends Controller
             $customer = Customer::where('email', $email)->first();
             if ($customer && Hash::check($password, $customer->password)) {
                 session(['userId' => $customer->id, 'firstName' => 'welcome '.$customer->firstname, 'lastName' => $customer->lastname]);
-                return $this->dashboard();
+                return redirect('dashboard');
             }
         }
         return redirect('index')->with('indexmessage', 'Email or Password is invalid');

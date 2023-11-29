@@ -222,11 +222,6 @@
                 $('#BookedBikeData').append(tr);
             }
 
-
-            $('#logout').on('click', () => {
-                console.log('inside logout clcik');
-                $(".msgz").fadeOut();
-            })
         })
 
     </script>
