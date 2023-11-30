@@ -5,30 +5,13 @@
     <div class="container mt-3">
         <div class="row justify-content-center center-container">
             <div class="col-md-5">
+            <div id="message-container"></div>
                 <form action="{{url('saveBooking')}}" method="post" class="form">
-                <div id="message-container"></div>
+                
                     <h3 class="text-center text-success">Book Bike Enjoy The Ride</h3>
                     @csrf
                     <input type="hidden" name="bikeId" id="bikeId">
                     <input type="hidden" name="userId" id="userId" value="{{session('userId')}}">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
-                                name="name" placeholder="- Your Name -">
-                            @error('name')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Email</label>
-                            <input type="email" id="email" class="form-control  @error('email') is-invalid @enderror"
-                                name="email" placeholder="- Email Address -">
-                            @error('email')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="" class="form-label">Dob</label>

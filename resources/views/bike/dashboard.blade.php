@@ -109,7 +109,7 @@
                             <th scope="col">Rent_Amount</th>
                             <th scope="col">Fine_Amount</th>
                             <th scope="col">status</th>
-                            <th>Action</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody id="BookedBikeData">
@@ -131,7 +131,7 @@
                 </div>
                 <div class="modal-body">
                     <p>If you have any questions or concerns, please feel free to contact us using the form below.</p>
-                    <form action="" method="post" class="form">
+                    <form action="{{url('saveFeedback')}}" method="post" class="form">
                         @csrf
                         <div class="form-group">
                             <label for="name">Name:</label>

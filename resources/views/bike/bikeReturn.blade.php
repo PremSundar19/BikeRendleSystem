@@ -32,19 +32,19 @@
             <div class="col-md-4">
                 <strong>Bike Booked Details</strong>
                 <ul class="list-unstyled">
-                    <li><strong>Book Date &nbsp; &nbsp;:</strong> {{$booking['booked_date']}}</li>
-                    <li><strong>Book Time &nbsp; &nbsp;:</strong> {{$booking['booked_time']}}</li>
-                    <li><strong>Return Date &nbsp;:</strong> {{$booking['return_date']}}</li>
-                    <li><strong>Return Time &nbsp;:</strong> {{$booking['return_time']}}</li>
+                    <li><strong>Book Date &nbsp; &nbsp;:</strong> {{$booking[0]->booked_date}}</li>
+                    <li><strong>Book Time &nbsp; &nbsp;:</strong> {{$booking[0]->booked_time}}</li>
+                    <li><strong>Return Date &nbsp;:</strong> {{$booking[0]->return_date}}</li>
+                    <li><strong>Return Time &nbsp;:</strong> {{$booking[0]->return_time}}</li>
                 </ul>
             </div>
             <div class="col-md-4 text-end">
-                <h3>Bill To</h3>
+                <strong>Bill To</strong>
                 <address>
-                    <strong> {{$booking['customer_name']}}</strong><br>
-                    {{$booking['address']}} <br>
-                    {{$booking['customer_email']}} <br>
-                    {{$booking['mobile']}}
+                    <strong> {{$booking[0]->customer_name}}</strong><br>
+                    {{$booking[0]->address}} <br>
+                    {{$booking[0]->customer_email}} <br>
+                    {{$booking[0]->mobile}}
                 </address>
             </div>
         </div>
@@ -62,26 +62,26 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{$booking['brand_name']}}</td>
-                    <td>{{$booking['bike_name']}}</td>
-                    <td>{{$booking['perhr']}} Rs</td>
-                    <td> {{$booking['wanted_period']}} {{$booking['duration']}}</td>
-                    <td>{{$booking['paid_amount']}} Rs</td>
-                    <td>{{$booking['fine_amount']}} Rs</td>
+                    <td>{{$booking[0]->brand_name}}</td>
+                    <td>{{$booking[0]->bike_name}}</td>
+                    <td>{{$booking[0]->per_hour_rent}} Rs</td>
+                    <td> {{$booking[0]->wanted_period}} {{$booking[0]->duration}}</td>
+                    <td>{{$booking[0]->total_amount}} Rs</td>
+                    <td>{{$booking[0]->fine_amount}} Rs</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td colspan="5" class="text-end"><strong>Total</strong></td>
-                    <td>{{$booking['fine_amount']}} Rs</td>
+                    <td>{{$booking[0]->fine_amount}} Rs</td>
                 </tr>
             </tfoot>
         </table>
         <div class="text-end mt-4">
-            @if($booking['fine_amount'] === 0)
+            @if($booking[0]->fine_amount === 0)
             <button type="button" class="btn btn-primary pay btn-xs py-0">Return</button>
             @endif
-            @if($booking['fine_amount'] > 0)
+            @if($booking[0]->fine_amount > 0)
             <button type="button" class="btn btn-primary pay btn-xs py-0">Pay Fine</button>
             @endif
             <a href="{{url('dashboard')}}" class="btn btn-secondary btn-xs py-0">Cancel</a>
@@ -102,7 +102,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
                 success: function (respone) {
-                    console.log(respone);
                     $('#message-container').html('<div class="alert alert-success text-center">' + respone.message + '</div>');
                     setTimeout(() => {
                         $('#message-container').empty();

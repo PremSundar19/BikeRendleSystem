@@ -114,6 +114,7 @@
                     <table class="table table-hover table-bordered table-stripted">
                         <thead>
                             <tr>
+                                <th>Customer_id</th>
                                 <th>firstName</th>
                                 <th>lastName</th>
                                 <th>Email </th>
@@ -195,14 +196,14 @@
                 <table class="table  table-bordered table-stripted table-hover mt-3">
                     <thead class="table-dark">
                         <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
+                            <th scope="col">User_Id</th>
                             <th scope="col">Brand</th>
                             <th scope="col">Model</th>
                             <th scope="col">Duration</th>
                             <th scope="col">Per/hr price</th>
                             <th scope="col">Rent_Paid</th>
                             <th scope="col">Fine_Amount</th>
+                            <!-- <th scope="col">Total_Amount</th> -->
                             <th scope="col">status</th>
                             <th>Bill</th>
                         </tr>
@@ -223,10 +224,8 @@
                     $('#BookedBikeData').empty();
                     var tr = '';
                     $.each(respone, function (index, booking) {
-                        var id = booking.customer_id;
                         tr += '<tr>';
-                        tr += '<td>' + booking.customer_name + '</td>';
-                        tr += '<td>' + booking.customer_email + '</td>';
+                        tr += '<td>' + booking.user_id + '</td>';
                         tr += '<td>' + booking.brand_name + '</td>';
                         tr += '<td>' + booking.bike_name + '</td>';
                         tr += '<td>' + booking.wanted_period + ' ' + booking.duration + '</td>';
@@ -254,6 +253,7 @@
                         var tr = '';
                         $.each(respone, function (index, customer) {
                             tr += '<tr>';
+                            tr += '<td>' + customer.id + '</td>';
                             tr += '<td>' + customer.firstname + '</td>';
 
                             if (customer.lastname === null) {

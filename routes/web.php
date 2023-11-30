@@ -28,7 +28,7 @@ Route::get('logout', [CustomerController::class, 'logout']);
 Route::get('index', function () {
     return view('bike.index');
 });
-Route::get('contactUs', [CustomerController::class, 'contactUs']);
+Route::post('saveFeedback', [CustomerController::class,'saveFeedback']);
 Route::get('dashboard', [CustomerController::class, 'dashboard']);
 Route::get('admindashboard', [CustomerController::class, 'admindashboard']);
 Route::get('fetchCustomers', [CustomerController::class,'fetchCustomers']);

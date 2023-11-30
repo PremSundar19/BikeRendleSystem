@@ -73,10 +73,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <!-- <a class="nav-link" data-target="#contactUs" data-toggle="modal">Contact</a> -->
+                    <a class="nav-link" href="#">Home</a>
                 </li>
             </ul>
         </div>
@@ -127,43 +124,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="contactUs" data-backdrop="static" data-keyboard="false" tabindex="-1"
-        aria-labelledby="contactUsLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="contactUsLabel">Contact Us - Jk Bikes Rental System</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal"
-                        aria-label="Close"><span>&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <p>If you have any questions or concerns, please feel free to contact us using the form below.</p>
-
-                    <form action="" method="post" class="contactForm">
-                        @csrf
-                        <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contactemail">Email:</label>
-                            <input type="email" id="contactemail" class="form-control" name="contactemail" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">message</label>
-                            <textarea name="message" id="message" cols="30" rows="5"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="send" class="btn btn-primary">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </form>
-                    <hr>
-                </div>
-            </div>
-        </div>
-    </div>
+   
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -9,13 +9,7 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="row content-justify-center">
-            <div class="col-md-6">
-                <div id="message-container"></div>
-            </div>
-        </div>
-    </div>
+   
     <div class="container">
         <div class="row">
             <h2 class="text-center">Bike Rental Bill</h2>
@@ -32,19 +26,19 @@
             <div class="col-md-4">
                 <strong>Bike Booked Details</strong>
                 <ul class="list-unstyled">
-                    <li><strong>Book Date &nbsp; &nbsp;:</strong> {{$booking['booked_date']}}</li>
-                    <li><strong>Book Time &nbsp; &nbsp;:</strong> {{$booking['booked_time']}}</li>
-                    <li><strong>Return Date &nbsp;:</strong> {{$booking['return_date']}}</li>
-                    <li><strong>Return Time &nbsp;:</strong> {{$booking['return_time']}}</li>
+                    <li><strong>Book Date &nbsp; &nbsp;:</strong> {{$booking[0]->booked_date}}</li>
+                    <li><strong>Book Time &nbsp; &nbsp;:</strong> {{$booking[0]->booked_time}}</li>
+                    <li><strong>Return Date &nbsp;:</strong> {{$booking[0]->return_date}}</li>
+                    <li><strong>Return Time &nbsp;:</strong> {{$booking[0]->return_time}}</li>
                 </ul>
             </div>
             <div class="col-md-4 text-end">
                 <strong>Bill To</strong>
                 <address>
-                    <strong> {{$booking['customer_name']}}</strong><br>
-                    {{$booking['address']}} <br>
-                    {{$booking['customer_email']}} <br>
-                    {{$booking['mobile']}}
+                    <strong> {{$booking[0]->customer_name}}</strong><br>
+                    {{$booking[0]->address}} <br>
+                    {{$booking[0]->customer_email}} <br>
+                    {{$booking[0]->mobile}}
                 </address>
             </div>
         </div>
@@ -63,13 +57,13 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{$booking['brand_name']}}</td>
-                    <td>{{$booking['bike_name']}}</td>
-                    <td>{{$booking['perhr']}} Rs</td>
-                    <td> {{$booking['wanted_period']}} {{$booking['duration']}}</td>
-                    <td>{{$booking['paid_amount']}} Rs</td>
-                    <td>{{$booking['fine_amount']}} Rs</td>
-                    <td>{{$booking['totalAmount']}} Rs</td>
+                    <td>{{$booking[0]->brand_name}}</td>
+                    <td>{{$booking[0]->bike_name}}</td>
+                    <td>{{$booking[0]->per_hour_rent}} Rs</td>
+                    <td> {{$booking[0]->wanted_period}} {{$booking[0]->duration}}</td>
+                    <td>{{$booking[0]->total_amount}} Rs</td>
+                    <td>{{$booking[0]->fine_amount}} Rs</td>
+                    <td>{{$booking[0]->totalAmount}} Rs</td>
                 </tr>
             </tbody>
         </table>

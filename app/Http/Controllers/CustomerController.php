@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\FeedBack;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -83,5 +84,13 @@ class CustomerController extends Controller
     }
     public function fetchCustomers(){
         return Customer::all();
+    }
+    public function saveFeedback(Request $request){
+       
+        $feedback = new FeedBack();
+        $feedback->name = $request['name'];
+        $feedback->email =  $request['contactemail'];
+        $feedback->feedback = $request['feedback'];
+      $feedback->save();
     }
 }

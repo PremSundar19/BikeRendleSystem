@@ -22,5 +22,9 @@ class Booking extends Model
         'per_hour_rent',
         'total_amount',
         'mobile',
+        'created_at',
+        'booked_date',
+        'booked_time',
     ];
+    
 }
