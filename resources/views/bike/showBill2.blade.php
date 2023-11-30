@@ -75,7 +75,7 @@
         </table>
         <div class="text-end mt-4">
            
-            <a href="{{url('dashboard')}}" class="btn btn-secondary btn-xs py-0">Back</a>
+            <a href="{{url('admindashboard')}}" class="btn btn-secondary btn-xs py-0">Back</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

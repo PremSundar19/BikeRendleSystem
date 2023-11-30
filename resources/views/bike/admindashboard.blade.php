@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -54,6 +55,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         crossorigin="anonymous"></script>
 </head>
+
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -199,9 +201,10 @@
                             <th scope="col">Model</th>
                             <th scope="col">Duration</th>
                             <th scope="col">Per/hr price</th>
-                            <th scope="col">Total Amount</th>
-                            <th scope="col">Fine Amount</th>
+                            <th scope="col">Rent_Paid</th>
+                            <th scope="col">Fine_Amount</th>
                             <th scope="col">status</th>
+                            <th>Bill</th>
                         </tr>
                     </thead>
                     <tbody id="BookedBikeData">
@@ -231,6 +234,11 @@
                         tr += '<td>' + booking.total_amount + ' Rs' + '</td>';
                         tr += '<td>' + booking.fine_amount + ' Rs' + '</td>';
                         tr += '<td>' + booking.status + '</td>';
+                        if (booking.status === "bike returned") {
+                            tr += '<td><div class="d-flex">';
+                            tr += '<a class="btn btn-secondary btn-xs py-1" href="/showBill/' + booking.booking_id + '">viewBill</a>';
+                            tr += '</div></td>';
+                        }
                         tr += '</tr>';
                     })
                     $('#BookedBikeData').append(tr);
@@ -271,4 +279,5 @@
         })
     </script>
 </body>
+
 </html>

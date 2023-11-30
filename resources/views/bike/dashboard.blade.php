@@ -106,8 +106,8 @@
                             <th scope="col">Model</th>
                             <th scope="col">Duration</th>
                             <th scope="col">Per/hr price</th>
-                            <th scope="col">Total Amount</th>
-                            <th scope="col">Fine Amount</th>
+                            <th scope="col">Rent_Amount</th>
+                            <th scope="col">Fine_Amount</th>
                             <th scope="col">status</th>
                             <th>Action</th>
                         </tr>
