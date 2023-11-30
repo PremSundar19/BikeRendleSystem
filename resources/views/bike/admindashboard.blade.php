@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -54,9 +53,7 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         crossorigin="anonymous"></script>
-
 </head>
-
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -142,14 +139,6 @@
                 </div>
                 <div class="modal-body">
                     <table class="table-hover">
-                        <!-- <thead>
-                            <tr>
-                                <th>Brand Name</th>
-                                <th>Bike Name</th>
-                                <th>Bike CC</th>
-                                <th>per_hour</th>
-                            </tr>
-                        </thead> -->
                         <tbody>
                             <tr>
                                 <form action="{{url('storeBike')}}" method="post">
@@ -222,12 +211,8 @@
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-
     <script>
-
         $(document).ready(() => {
-
             $.ajax({
                 url: '{{url('fetchBookings')}}',
                 type: 'GET',
@@ -258,10 +243,8 @@
                     url: '{{url('fetchCustomers')}}',
                     type: 'GET',
                     success: function (respone) {
-                        console.log(respone);
                         var tr = '';
                         $.each(respone, function (index, customer) {
-                            console.log(customer);
                             tr += '<tr>';
                             tr += '<td>' + customer.firstname + '</td>';
 
@@ -280,7 +263,6 @@
                         $('.customer_data').append(tr);
                     }
                 })
-
             })
 
             $('#logout').on('click', () => {
@@ -289,5 +271,4 @@
         })
     </script>
 </body>
-
 </html>

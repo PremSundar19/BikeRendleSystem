@@ -137,8 +137,36 @@ class BookingController extends Controller
     }
 
    public function  showBill($bookingId){
-     $booking = Booking::where('booking_id',$bookingId)->first();
-     return view('bike.showbill', ['booking' => $booking]);
+    $booking = DB::select('SELECT * FROM booking WHERE booking_id=?', [$bookingId]);
+    $currentDateTime = Carbon::now('Asia/Kolkata');
+    $return_date = $currentDateTime->format('Y-m-d');
+    $return_time = $currentDateTime->format('H:i:s');
+    $duration = $booking[0]->duration;
+    $expectedReturnTime = Carbon::parse($booking[0]->created_at);
+   
+    $booked_date = $expectedReturnTime->format('Y-m-d');
+    $booked_time = $expectedReturnTime->format('H:i:s');
+    $data = [
+        'booking_id' => $booking[0]->booking_id,
+        'customer_name' => $booking[0]->customer_name,
+        'customer_email' => $booking[0]->customer_email,
+        'brand_name' => $booking[0]->brand_name,
+        'bike_name' => $booking[0]->bike_name,
+        'paid_amount' => $booking[0]->total_amount,
+        'fine_amount' => $booking[0]->fine_amount,
+        'booked_date' => $booked_date,
+        'booked_time' => $booked_time,
+        'return_date' => $booking[0]->return_date,
+        'return_time' => $booking[0]->return_time,
+        'address' => $booking[0]->address,
+        'mobile' => $booking[0]->mobile,
+        'perhr' => $booking[0]->per_hour_rent,
+        'duration' => $booking[0]->duration,
+        'wanted_period' => $booking[0]->wanted_period,
+
+    ];
+  
+     return view('bike.showbill', ['booking' => $data]);
    }
     public function fetchBookings()
     {

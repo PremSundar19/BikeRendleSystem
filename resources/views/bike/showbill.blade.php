@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Bike Rental Bill</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -41,7 +39,7 @@
                 </ul>
             </div>
             <div class="col-md-4 text-end">
-                <h3>Bill To</h3>
+                <strong>Bill To</strong>
                 <address>
                     <strong> {{$booking['customer_name']}}</strong><br>
                     {{$booking['address']}} <br>
@@ -80,7 +78,5 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    
 </body>
-
 </html>

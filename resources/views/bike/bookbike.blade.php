@@ -1,7 +1,6 @@
 @extends('layout.form')
 @section('content')
-<!-- tofler
-india mark justdail -->
+
 <body>
     <div class="container mt-3">
         <div class="row justify-content-center center-container">
@@ -87,7 +86,6 @@ india mark justdail -->
                                 <option value="Hour">Hour</option>
                                 <option value="Day">Day</option>
                                 <option value="Week">Week</option>
-                                <!-- <option value="Month">Month</option> -->
                             </select>
                             <span class="text-danger selectDuration"></span>
                             @error('duration')
@@ -217,7 +215,6 @@ india mark justdail -->
                             }, 4000);
                             $('#bike').val('- choose -');
                             $('#rate').val('');
-
                         }
                     }
                 })

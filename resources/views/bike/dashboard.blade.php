@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -50,7 +49,6 @@
         }
     </style>
 </head>
-
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -84,9 +82,9 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url('showBikeBookForm')}}">Book_Bike</a>
                 </li>
-                <li class="nav-item active">
-                    <!-- <a class="nav-link" data-target="#contactUs" data-toggle="modal">Contact</a> -->
-                </li>
+                <!-- <li class="nav-item active">
+                    <a class="nav-link" data-target="#contactUs" data-toggle="modal">Contact</a>
+                </li> -->
                 <li class="nav-item active">
                     <a class="nav-link" href="{{url('logout')}}" id="logout">LogOut</a>
                 </li>
@@ -104,8 +102,6 @@
                 <table class="table  table-bordered table-stripted table-hover mt-3">
                     <thead class="table-dark">
                         <tr>
-                            <!-- <th scope="col">Name</th> -->
-                            <!-- <th scope="col">Email</th> -->
                             <th scope="col">Brand</th>
                             <th scope="col">Model</th>
                             <th scope="col">Duration</th>
@@ -227,16 +223,11 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function (response) {
-                            // displaydata();
                         }
                     });
                 }
             }
         });
-
-
     </script>
-
 </body>
-
 </html>
